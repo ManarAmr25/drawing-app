@@ -4,21 +4,56 @@ import java.awt.*;
 
 public class Ellipse extends Shapes{
 
-    private double calcMajor(){
+    int major;
+    int minor;
+    Point center;
+    Color color;
 
-        return Math.abs(this.endPoint.x - this.startPoint.x)/2;
+    Ellipse(int borderThickness, Color borderColor, Integer id, int major, int minor, Point center, Color color) {
+        super(borderThickness, borderColor, id);
+        this.major = major;
+        this.minor = minor;
+        this.color = color;
+        this.center = center;
     }
 
-    private double calcMinor(){
-        return Math.abs(this.endPoint.y - this.startPoint.y)/2;
+
+    public int getMajor() {
+        return major;
+    }
+
+    public void setMajor(int major) {
+        this.major = major;
+    }
+
+    public int getMinor() {
+        return minor;
+    }
+
+    public void setMinor(int minor) {
+        this.minor = minor;
+    }
+
+    public Point getCenter() {
+        return center;
+    }
+
+    public void setCenter(Point center) {
+        this.center = center;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override
     protected String Show() {
-        Point center = calcCenter();
-        double major = calcMajor();
-        double minor = calcMinor();
-        return "major axis: " + major + " ,minor axis: " + minor + " ,center: ( " + center.x + "," + center.y + " )";
+
+        return "major axis: " + this.major + " ,minor axis: " + this.minor + " ,center: ( " +this.center.x + "," +this.center.y + " )";
     }
 
 }

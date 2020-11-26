@@ -4,13 +4,43 @@ import java.awt.*;
 
 public class Square extends Shapes{
 
-    private int calcLen(){
-        return Math.abs(this.endPoint.x - this.startPoint.x);
+    int length;
+    Point center;
+    Color color;
+
+    Square(int borderThickness , Color borderColor , Integer id, int length, Point center, Color color){
+        super(borderThickness, borderColor, id);
+        this.length = length;
+        this.center = center;
+        this.color = color;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public Point getCenter() {
+        return center;
+    }
+
+    public void setCenter(Point center) {
+        this.center = center;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override
     protected String Show() {
-        Point center = calcCenter();
-        return "Length: " + Integer.toString(calcLen()) + " ,center: ( " + center.x + "," + center.y + " )";
+        return "Length: " + this.length + " ,center: ( " + this.center.x + "," + this.center.y + " )";
     }
 }
