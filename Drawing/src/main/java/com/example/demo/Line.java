@@ -12,11 +12,12 @@ public class Line extends Shapes{
 
     }
 
-   Line( Integer id, Map<String,String>p){
+    Line( Integer id, Map<String,String>p){
         super(id,p);
- }
+        this.assignPoints();
+    }
 
-    private void setPoints(){
+    private void assignPoints(){
         String sp = this.getProperty("startpoint");
         String ep = this.getProperty("endpoint");
         if( sp ==null || ep == null){
@@ -33,6 +34,7 @@ public class Line extends Shapes{
         return x;
     }
 
+    //not used yet
     protected Point getSize() {
         int x = Math.abs(StartPoint.x-EndPoint.x);
         int y = Math.abs(StartPoint.y-EndPoint.y);
@@ -41,11 +43,6 @@ public class Line extends Shapes{
 
     @Override
     protected String Show() {
-       String sp = this.getProperty("startpoint");
-        String ep = this.getProperty("endpoint");
-        if( sp ==null || ep == null){
-            throw new RuntimeException("start or end point missing");
-        }
         return "Length: " + Double.toString(calcLen()) + ",start: (" + this.StartPoint.x + this.StartPoint.y + "), End: ("+ this.EndPoint.x + this.EndPoint.y + ")";
     }
 

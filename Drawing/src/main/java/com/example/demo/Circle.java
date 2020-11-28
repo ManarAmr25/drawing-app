@@ -1,42 +1,37 @@
 package com.example.demo;
 
 import java.awt.*;
+import java.util.Map;
 
 public class Circle extends Shapes {
 
-    int radius;
-    Point center;
-    Color color;
+    private int radius;
+    private Point center;
 
-    Circle(int borderThickness, Color borderColor, Integer id, Point center, Color color, int radius) {
-        super(borderThickness, borderColor, id);
-        this.color = color;
-        this.center = center;
-        this.radius = radius;
+    Circle(){
+
+    }
+    Circle( Integer id, Map<String,String> p){
+        super(id,p);
+        this.assignRadius();
+        this.assignCenter();
     }
 
-    public int getRadius() {
-        return radius;
+    public void assignRadius() {
+        String radius  = this.properties.get("radius");
+        if (radius == null){
+            throw new RuntimeException("radius missing");
+        }
+        this.radius = Integer.parseInt(radius);
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
-    public Point getCenter() {
-        return center;
-    }
-
-    public void setCenter(Point center) {
-        this.center = center;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    public void assignCenter() {
+        String center = this.properties.get("center");
+        if(center == null){
+            throw new RuntimeException("center missing");
+        }
+        String[] centerArr = center.split(",");
+        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override

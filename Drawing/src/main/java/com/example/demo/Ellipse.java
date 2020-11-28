@@ -1,58 +1,45 @@
 package com.example.demo;
 
 import java.awt.*;
+import java.util.Map;
 
 public class Ellipse extends Shapes{
 
-    int major;
-    int minor;
-    Point center;
-    Color color;
+    private int major;
+    private int minor;
+    private Point center;
 
-    Ellipse(int borderThickness, Color borderColor, Integer id, int major, int minor, Point center, Color color) {
-        super(borderThickness, borderColor, id);
-        this.major = major;
-        this.minor = minor;
-        this.color = color;
-        this.center = center;
+    Ellipse(){
+
     }
 
-
-    public int getMajor() {
-        return major;
+    Ellipse(Integer id, Map<String,String> p) {
+        super(id, p);
+        this.assignAxes();
+        this.assignCenter();
     }
 
-    public void setMajor(int major) {
-        this.major = major;
+    public void assignAxes() {
+        String major = this.properties.get("major");
+        String minor = this.properties.get("minor");
+        if(major == null || minor == null){
+            throw new RuntimeException("major or minor missing");
+        }
+        this.major = Integer.parseInt(major);
+        this.minor = Integer.parseInt(minor);
     }
 
-    public int getMinor() {
-        return minor;
-    }
-
-    public void setMinor(int minor) {
-        this.minor = minor;
-    }
-
-    public Point getCenter() {
-        return center;
-    }
-
-    public void setCenter(Point center) {
-        this.center = center;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    public void assignCenter() {
+        String center = this.properties.get("center");
+        if(center == null){
+            throw new RuntimeException("center missing");
+        }
+        String[] centerArr = center.split(",");
+        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
     protected String Show() {
-
         return "major axis: " + this.major + " ,minor axis: " + this.minor + " ,center: ( " +this.center.x + "," +this.center.y + " )";
     }
 
