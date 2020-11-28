@@ -14,6 +14,42 @@ public class Drawing {
     private Stack<Shapes> redo;
     private Map<Integer,Shapes> list;
 
+    Drawing(){
+
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Stack<Shapes> getUndo() {
+        return undo;
+    }
+
+    public void setUndo(Stack<Shapes> undo) {
+        this.undo = undo;
+    }
+
+    public Stack<Shapes> getRedo() {
+        return redo;
+    }
+
+    public void setRedo(Stack<Shapes> redo) {
+        this.redo = redo;
+    }
+
+    public Map<Integer, Shapes> getList() {
+        return list;
+    }
+
+    public void setList(Map<Integer, Shapes> list) {
+        this.list = list;
+    }
+
     Drawing(boolean isNew){
         if(isNew){
             this.undo = new Stack<Shapes>();
