@@ -1,42 +1,37 @@
 package com.example.demo;
 
 import java.awt.*;
+import java.util.Map;
 
 public class Square extends Shapes{
 
-    int length;
-    Point center;
-    Color color;
+   private int length;
+   private Point center;
 
-    Square(int borderThickness , Color borderColor , Integer id, int length, Point center, Color color){
-        super(borderThickness, borderColor, id);
-        this.length = length;
-        this.center = center;
-        this.color = color;
+   Square(){
+
+   }
+    Square(Integer id, Map<String,String>p){
+        super(id,p);
+        this.assignLength();
+        this.assignCenter();
     }
 
-    public int getLength() {
-        return length;
+    public void assignLength() {
+        String length  = this.properties.get("length");
+        if (length == null){
+            throw new RuntimeException("length of square missing");
+        }
+        this.length = Integer.parseInt(length);
     }
 
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public Point getCenter() {
-        return center;
-    }
-
-    public void setCenter(Point center) {
-        this.center = center;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    public void assignCenter() {
+        String center = this.properties.get("center");
+        if(center == null){
+            throw new RuntimeException("center of square missing");
+        }
+        String[] centerArr = center.split(",");
+        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
