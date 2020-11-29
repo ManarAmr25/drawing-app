@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.nio.file.Paths;
+import java.util.Map;
 
 public class App {
 
     static volatile App app;
+    Drawing current;
 
     private App() {}
 
@@ -24,11 +26,6 @@ public class App {
         }
         return app;
     }
-
-    Drawing current;
-
-    public void Redo(){ }
-    public void Undo(){ }
 
     public boolean Save(String path, String type){
         if(type.equalsIgnoreCase("XML")){
@@ -66,10 +63,11 @@ public class App {
         current = new Drawing(true);
     }
 
-    public Integer NewShape(String type){return 0;}
-    public void DeleteShape(Integer id){}
-
-    public void Update(Shapes oldS , Shapes newS){}//TODO
-
+    public Map<Integer, Shapes> GetList(){ // undo & redo
+        if (this.current != null){
+            return this.current.getList();
+        }
+        return null;
+    }
 
 }
