@@ -322,7 +322,7 @@ export default {
       var index = list.length;
       list.push(x);
       axios.get("http://localhost:8085/create", {
-        params: {
+        params: { 
           type:"triangle"
         }
       })
@@ -493,8 +493,8 @@ export default {
           selShape.w=document.getElementById('radx').value;
           selShape.h=document.getElementById('rady').value;
           m.set("topleft",(selShape.x,selShape.y))
-          m.set("radius-x",selShape.w)
-          m.set("radius-y",selShape.h)
+          m.set("radius_x",selShape.w)
+          m.set("radius_y",selShape.h)
         }
         if(n==2){
           var index = list.length;
@@ -558,6 +558,71 @@ export default {
       mapping=new Map(); // key =id,value = index
       sel=false;
       selShape=null;
+    },
+    set_list(m){
+      var newList=[]
+      m.forEach( (value, key) => {
+        var id =key;
+        var type = value.get("type");
+        var fillcolor=value.get("fillcolor"),
+            borderwidth=value.get("borderwidth"),
+            bordercolor=value.get("bordercolor"),
+            border=false;
+            if(value.has("bordercolor")&&bordercolor!=null&&bordercolor!=undefined){
+              border=true
+            }
+        var i=newList.length
+        if(type=="line"){
+          var first=value.get("first"),
+              second=value.get("second");
+          newList.push(new shape(first.split(",")[0],first.split(",")[1],second.split(",")[0],second.split(",")[1],
+              0,0,0,0,0,0,
+              fillcolor,border,borderwidth,bordercolor,"l"));
+          newList[i].id=id;
+        }
+        else if(type=="square"||type=="rectangle"){
+          var top=value.get("topleft"),
+              wid=value.get("width"),
+              h=value.get("height"),
+              t="s";
+          if(type=="rectangle"){
+            t="r";
+          }
+          newList.push(new shape(top.split(",")[0],top.split(",")[1],wid,h,
+          0,0,0,0,0,0,fillcolor,border,
+          borderwidth,bordercolor,t));
+          newList[i].id=id;
+
+        }
+        else if(type == "triangle"){
+          var first0=value.get("first"),
+              second0=value.get("second"),
+              third=value.get("third");
+          newList.push(new shape(0,0,0,0,first0.split(",")[0],first0.split(",")[1],
+          second0.split(",")[0],second0.split(",")[1],third.split(",")[0],third.split(",")[1],fillcolor,border,borderwidth
+              ,bordercolor,"t"))
+          newList[i].id=id;
+        }
+        else if(type=="circle"){
+          var top0=value.get("topleft"),
+              rad=value.get("radius");
+          newList.push(new shape(top0.split(",")[0],top0.split(",")[1],rad,0,
+          0,0,0,0,0,0,fillcolor,border,
+          borderwidth,bordercolor,"c"));
+          newList[i].id=id;
+
+        }
+        else{
+          var top1=value.get("topleft"),
+              radx=value.get("radius_x"),
+              rady=value.get("radius_y");
+          newList.push(new shape(top1.split(",")[0],top1.split(",")[1],radx,rady,
+              0,0,0,0,0,0,fillcolor,border,
+              borderwidth,bordercolor,"e"));
+          newList[i].id=id;
+        }
+      });
+      list=newList;
     }
 
     }
