@@ -13,8 +13,6 @@ public class Circle extends Shapes {
     }
     Circle( Integer id, Map<String,String> p){
         super(id,p);
-        this.assignRadius();
-        this.assignCenter();
     }
 
     public void assignRadius() {
@@ -36,6 +34,8 @@ public class Circle extends Shapes {
 
     @Override
     protected String Show() {
+        this.assignRadius();
+        this.assignCenter();
         return "radius: " + this.radius + " ,center: ( " +this.center.x + "," +this.center.y + " )";
     }
 }

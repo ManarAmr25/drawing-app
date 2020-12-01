@@ -14,7 +14,6 @@ public class Line extends Shapes{
 
     Line( Integer id, Map<String,String>p){
         super(id,p);
-        this.assignPoints();
     }
 
     private void assignPoints(){
@@ -43,7 +42,8 @@ public class Line extends Shapes{
 
     @Override
     protected String Show() {
-        return "Length: " + Double.toString(calcLen()) + ",start: (" + this.StartPoint.x + this.StartPoint.y + "), End: ("+ this.EndPoint.x + this.EndPoint.y + ")";
+        this.assignPoints();
+        return "Length: " + Double.toString(calcLen()) + ",start: (" + this.StartPoint.x + "," + this.StartPoint.y + "), End: ("+ this.EndPoint.x + "," + this.EndPoint.y + ")";
     }
 
 }

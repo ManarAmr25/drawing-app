@@ -42,14 +42,24 @@ public  abstract class Shapes implements Cloneable {
     protected abstract String Show();
 
     public boolean setProperty(String property , String value){
-        if(this.properties.replace(property,value) == null){
-           return false;
-       }
-        return true;
+        property = property.toLowerCase();
+        if(this.properties.containsKey(property)) {
+            this.properties.put(property,value);
+            System.out.println(this.properties.get(property));
+            return true;
+        }
+        return false;
     }
 
     public String getProperty(String property){
         return this.properties.get(property);
     }
 
+    @Override
+    public String toString() {
+        return "Shapes{" +
+                "id=" + id +
+                ", properties=" + properties +
+                '}';
+    }
 }

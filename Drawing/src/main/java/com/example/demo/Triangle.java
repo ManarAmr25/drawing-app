@@ -13,8 +13,6 @@ public class Triangle extends Shapes{
     }
     Triangle(Integer id, Map<String,String> p){
         super(id,p);
-        this.assignLength();
-        this.assignCenter();
     }
 
     public void assignLength() {
@@ -37,6 +35,8 @@ public class Triangle extends Shapes{
 
     @Override
     protected String Show() {
+        this.assignCenter();
+        this.assignLength();
         return "Base length: " + this.length + " ,center: ( " +this.center.x + "," +this.center.y + " )";
     }
 }

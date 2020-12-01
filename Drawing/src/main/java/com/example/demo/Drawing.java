@@ -1,13 +1,11 @@
 package com.example.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import javax.swing.Action;
 import javax.xml.bind.JAXBContext;
-import java.awt.*;
 import java.util.*;
 
 public class Drawing {
+
     /*
      * NOTE: a trash is needed to restore deleted shapes
      * Undo & redo stacks >> dequeue of actions
@@ -98,7 +96,6 @@ public class Drawing {
     public Integer Add(String type){
         Integer id = generateId();
         Shapes s = ShapeFactory.getShape(type, id);
-
         action a = new action("create",id);
         this.list.put(id,s);
         this.undo.add(a);
@@ -127,20 +124,21 @@ public class Drawing {
     public Shapes getShapeById(Integer id){
         return this.list.get(id);
     }
+
     public void Redo(){
         if(this.redo.size() != 0){
             action a = this.redo.removeLast();
             this.undo.add(a);
             if(a.getActionType().equals("create")){
-                Shapes x = this.trash.remove(id);
+                Shapes x = this.trash.remove(a.getId());
                 this.list.put(x.getId(),x);
             }
             else if(a.getActionType().equals("delete")){
-                Shapes x = this.list.remove(id);
+                Shapes x = this.list.remove(a.getId());
                 this.trash.put(x.getId(),x);
             }
             else if(a.getActionType().equals("modify")){
-                Shapes s = getShapeById(id);
+                Shapes s = getShapeById(a.getId());
                 s.setProperty(a.getProperty(), a.getNewValue());
             }
         }
@@ -151,15 +149,17 @@ public class Drawing {
             action a = this.undo.removeLast();
             this.redo.add(a);
             if(a.getActionType().equals("create")){
-                Shapes x = this.list.remove(id);
+                Shapes x = this.list.remove(a.getId());
                 this.trash.put(x.getId(),x);
             }
             else if(a.getActionType().equals("delete")){
-                Shapes x = this.trash.remove(id);
+                Shapes x = this.trash.remove(a.getId());
+                System.out.println(this.trash.containsKey(a.getId()));
+                System.out.println(x);
                 this.list.put(x.getId(),x);
             }
             else if(a.getActionType().equals("modify")){
-                Shapes s = getShapeById(id);
+                Shapes s = getShapeById(a.getId());
                 s.setProperty(a.getProperty(), a.getOldValue());
             }
         }
@@ -175,7 +175,7 @@ public class Drawing {
             return  false;
         }
         s.setProperty(property, newValue);
-        action a = new action(property,oldValue,newValue);
+        action a = new action(property,oldValue,newValue,id);
         this.list.put(id,s);
         this.undo.add(a);
         this.redo.clear();

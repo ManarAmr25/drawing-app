@@ -10,7 +10,7 @@ import java.util.Map;
 public class App {
 
     static volatile App app;
-    Drawing current;
+    private Drawing current;
 
     private App() {}
 
@@ -70,4 +70,17 @@ public class App {
         return null;
     }
 
+    public Integer Create(String type){
+        return this.current.Add(type);
+    }
+
+    public void Edit(Integer id,Map<String, String> m) { //Map<property,value>
+        for (String property : m.keySet()) {
+            this.current.Update(id, property, m.get(property));
+        }
+    }
+
+    public void Delete(Integer id){
+        this.current.Delete(id);
+    }
 }

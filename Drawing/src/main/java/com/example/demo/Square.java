@@ -5,16 +5,15 @@ import java.util.Map;
 
 public class Square extends Shapes{
 
-   private int length;
-   private Point center;
+    private int length;
+    private Point corner;
 
-   Square(){
+    Square(){
 
-   }
-    Square(Integer id, Map<String,String>p){
+    }
+
+    Square(Integer id, Map<String,String> p){
         super(id,p);
-        this.assignLength();
-        this.assignCenter();
     }
 
     public void assignLength() {
@@ -25,17 +24,20 @@ public class Square extends Shapes{
         this.length = Integer.parseInt(length);
     }
 
-    public void assignCenter() {
-        String center = this.properties.get("center");
-        if(center == null){
-            throw new RuntimeException("center of square missing");
+    public void assignCorner() {
+        String corner = this.properties.get("corner");
+        if(corner == null){
+            throw new RuntimeException("corner of square missing");
         }
-        String[] centerArr = center.split(",");
-        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
+        String[] centerArr = corner.split(",");
+        this.corner = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
     protected String Show() {
-        return "Length: " + this.length + " ,center: ( " + this.center.x + "," + this.center.y + " )";
+        this.assignLength();
+        this.assignCorner();
+        return "Length: " + this.length + " ,center: ( " + this.corner.x + "," + this.corner.y + " )";
     }
+
 }

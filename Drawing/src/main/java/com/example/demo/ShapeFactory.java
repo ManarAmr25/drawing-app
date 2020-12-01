@@ -33,16 +33,16 @@ public class ShapeFactory {
             return new Ellipse(id, props);
         } else if (type.equalsIgnoreCase("Square")) {
             props.put("length","100");
-            props.put("TopLeftCorner","100,100");
+            props.put("corner","100,100");
             props.put("color","255 255 255 0");
             return new Square(id, props);
         } else if (type.equalsIgnoreCase("Rectangle")) {
             props.put("width","150");
             props.put("height","100");
-            props.put("TopLeftCorner","100,100");
+            props.put("corner","100,100");
             props.put("color","255 255 255 0");
             return new Rectangle(id, props);
-        } else if (type.equalsIgnoreCase("Triangle")) {
+        } else if (type.equalsIgnoreCase("Triangle")) { //height, base, topPoint
             props.put("color","255 255 255 0");
             props.put("base","150");
             //add missing properties for triangle

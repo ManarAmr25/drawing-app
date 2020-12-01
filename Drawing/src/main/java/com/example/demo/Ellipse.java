@@ -15,8 +15,6 @@ public class Ellipse extends Shapes{
 
     Ellipse(Integer id, Map<String,String> p) {
         super(id, p);
-        this.assignAxes();
-        this.assignCenter();
     }
 
     public void assignAxes() {
@@ -40,6 +38,8 @@ public class Ellipse extends Shapes{
 
     @Override
     protected String Show() {
+        this.assignAxes();
+        this.assignCenter();
         return "major axis: " + this.major + " ,minor axis: " + this.minor + " ,center: ( " +this.center.x + "," +this.center.y + " )";
     }
 

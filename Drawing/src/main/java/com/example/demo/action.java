@@ -1,7 +1,6 @@
 package com.example.demo;
 
-public class action{
-
+public class action {
     private String actionType;
     private Integer id;
     private String property;
@@ -17,12 +16,13 @@ public class action{
         this.id = id;
     }
 
-   action(String property , String oldValue , String newValue){ //modify
+    action(String property , String oldValue , String newValue,Integer id){ //modify
         this.property = property;
         this.newValue = newValue;
         this.oldValue = oldValue;
+        this.id = id;
         this.actionType = "modify";
-   }
+    }
 
 
     public String getActionType() {
@@ -63,5 +63,16 @@ public class action{
 
     public void setNewValue(String newValue) {
         this.newValue = newValue;
+    }
+
+    @Override
+    public String toString() {
+        return "action{" +
+                "actionType='" + actionType + '\'' +
+                ", id=" + id +
+                ", property='" + property + '\'' +
+                ", oldValue='" + oldValue + '\'' +
+                ", newValue='" + newValue + '\'' +
+                '}';
     }
 }
