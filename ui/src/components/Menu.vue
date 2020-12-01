@@ -1,49 +1,50 @@
 <template>
   <nav>
-    <!-- button new -->
+      <!-- button new -->
     <button id="myBtn" class="btn" @click="openmodal(0)">NEW</button>
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="close(0)">&times;</span>
-        <button class="open" @click="savecurrentFile()">Save current folder</button><br><br>
-        <button class="open" @click="newfile()">Discard current folder</button>
-      </div></div>
+     <div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" @click="close(0)">&times;</span>
+     <button class="open" @click="savecurrentFile()">Save current folder</button><br><br>
+     <button class="open" @click="newfile()">Discard current folder</button>
+  </div></div>
 
-    <!-- button save -->
+     <!-- button save -->
     <button id="myBtn1" class="btn" @click="openmodal(1)">Save</button>
     <div id="myModal1" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="close(1)">&times;</span>
-        <h1>Save file</h1>
-        <label for="fname">File name:</label><br>
-        <input type="text" id="fname" name="fname" required autocomplete="off"><br><br>
-        <input type="radio" id="json" name="type" value="json" checked>
-        <label for="json">.json</label><br>
-        <input type="radio" id="xml" name="type" value="xml">
-        <label for="xml">.xml</label><br><br>
-        <label for="fpath">Enter the path of the folder to be saved in:</label><br>
-        <input type="text" id="fpath" name="fpath" required autocomplete="off"><br><br>
-        <button class="open" @click="save()">Save file</button>
+  <div class="modal-content">
+    <span class="close" @click="close(1)">&times;</span>
+    <h1>Save file</h1>
+    <label for="fname">File name:</label><br>
+  <input type="text" id="fname" name="fname" required autocomplete="off"><br><br>
+   <input type="radio" id="json" name="type" value="json" checked>
+  <label for="json">.json</label><br>
+  <input type="radio" id="xml" name="type" value="xml">
+  <label for="xml">.xml</label><br><br>
+  <label for="fpath">Enter the path of the folder to be saved in:</label><br>
+  <input type="text" id="fpath" name="fpath" required autocomplete="off"><br><br>
+  <button class="open" @click="save()">Save file</button>
 
-      </div>
-    </div>
+  </div>
+</div>
 
-    <!-- button open -->
-    <button id="myBtn2" class="btn" @click="openmodal(2)">OPEN</button>
-    <div id="myModal2" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="close(2)">&times;</span>
-        <label for="fname">File name:</label><br>
-        <input type="text" id="fname1" name="fname" required autocomplete="off"><br><br>
-        <label for="fpath">Enter the path of the folder which the file is saved  in:</label><br>
-        <input type="text" id="fpath1" name="fpath" required autocomplete="off"><br><br>
-        <button class="open" @click="open()">open file</button>
-      </div></div>
-    <!-- button undo -->
-    <button class="disabled" ><span style='font-weight:bold;'>&#8630;</span> UNDO</button>
+ <!-- button open -->
+<button id="myBtn2" class="btn" @click="openmodal(2)">OPEN</button>
+<div id="myModal2" class="modal">
+  <div class="modal-content">
+  <span class="close" @click="close(2)">&times;</span>
+  
+    <label for="fname">File name:</label><br>
+  <input type="text" id="fname1" name="fname" required autocomplete="off"><br><br>
+   <label for="fpath">Enter the path of the folder which the file is saved  in:</label><br>
+  <input type="text" id="fpath1" name="fpath" required autocomplete="off"><br><br>
+    <button class="open" @click="open()">open file</button>
+  </div></div>
+ <!-- button undo -->
+    <button id="undo" class="disabled" @click="undo()"><span style='font-weight:bold;'>&#8630;</span> UNDO</button>
 
-    <!-- button redo -->
-    <button class="disabled" id="MyElement" ><span style='font-weight:bold;'>&#8631;</span> REDO</button>
+     <!-- button redo -->
+    <button id="redo" class="disabled" @click="redo()"><span style='font-weight:bold;'>&#8631;</span> REDO</button>
   </nav>
 
 </template>
@@ -55,9 +56,26 @@ var newf=false;
 export default {
   name: "Menu",
   methods: {
-    enable(){
+   /* enable(){
       //undo,redo
       document.getElementById("MyElement").className = "btn";
+    },*/
+    undo(){
+      axios.get("http://localhost:8085/undo")
+          .then(function (response) {
+             if(response != null){
+               Shapes.methods.set_list(response);
+             }
+          })
+
+    },
+    redo(){
+        axios.get("http://localhost:8085/redo")
+          .then(function (response) {
+             if(response != null){
+               Shapes.methods.set_list(response);
+             }
+          })
     },
 
     savecurrentFile(){
@@ -67,83 +85,85 @@ export default {
     },
 
     newfile(){
-      Shapes.methods.clear();
-      // send to backend axios
-      axios.get("http://localhost:8085/new")
-      if(newf==false){
-        document.getElementsByClassName("close")[0].click();}
+         Shapes.methods.clear(); 
+         // send to backend axios
+         axios.get("http://localhost:8085/new")
+         if(newf==false){
+         document.getElementsByClassName("close")[0].click();}
 
     },
 
     close(number){
       if(number==0){
-        document.getElementById("myModal").style.display="none";
+      document.getElementById("myModal").style.display="none";
       }
       else if(number==1){
-        document.getElementById("myModal1").style.display="none";
+      document.getElementById("myModal1").style.display="none";
       }else{
-        document.getElementById("myModal2").style.display="none";
+         document.getElementById("myModal2").style.display="none";
       }
     },
     save(){
-      var ext;
-      if( document.getElementById("json").checked){
-        ext=".json";
-      }else{
-        ext=".xml"
-      }
+    var ext;
+    if( document.getElementById("json").checked){
+      ext=".json";
+    }else{
+      ext=".xml"
+    }
 
-      //backend axios
-      axios.get("http://localhost:8085/save", {
+    //backend axios
+    axios.get("http://localhost:8085/save", {
         params: {
           name:document.getElementById("fname").value,
           path:document.getElementById("fpath").value,
           extenstion:ext
         }
       })
-      if(newf){
-        newf=false;
-        this.newfile();
+    if(newf){
+      newf=false;
+      this.newfile();
 
-      }
+    }
 
 
-      document.getElementsByClassName("close")[1].click();
+     document.getElementsByClassName("close")[1].click();
 
-    },
-    open(){
-      Shapes.methods.clear();
-      //axios
-      axios.get("http://localhost:8085/load", {
+  },
+  open(){
+    Shapes.methods.clear();
+    var res = document.getElementById("fname1").value.split(".");
+    //axios
+    axios.get("http://localhost:8085/load", {
         params: {
-          name:document.getElementById("fname1").value,
-          path:document.getElementById("fpath1").value
+          name:res[0],
+          path:document.getElementById("fpath1").value,
+          extenstion:res[1]
         }
       }).then(function (response) {
         console.log(response);
-        //take map
-        //then draw again ?? equal list flag >> false in redraw
-      })
-
-      document.getElementsByClassName("close")[2].click();
-
-    },
-
-    openmodal(number){
-      if(number==0){
-        document.getElementById("myModal").style.display = "block";
-      }
-      else if(number==1){
-        document.getElementById("myModal1").style.display="block";
-      }else{
-        document.getElementById("myModal2").style.display="block";
-      }
-    }
+            Shapes.methods.set_list(response);
+          })
+    
+    document.getElementsByClassName("close")[2].click();
 
   },
 
 
+    openmodal(number){
+        if(number==0){
+      document.getElementById("myModal").style.display = "block";
+      }
+      else if(number==1){
+      document.getElementById("myModal1").style.display="block";
+      }else{
+         document.getElementById("myModal2").style.display="block";
+      }
+    }
+    
+  },
 
+  
+  
 }
 </script>
 
@@ -166,8 +186,8 @@ button{
 .open{
   font-size: 14px;
   border-radius: 20px;
-  border: 1px solid #888;
-  box-shadow: none;
+    border: 1px solid #888;
+    box-shadow: none;
   padding: 5px 5px;
 }
 .btn:hover, .open:hover {
