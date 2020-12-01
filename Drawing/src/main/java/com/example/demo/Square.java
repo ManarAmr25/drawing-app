@@ -5,8 +5,9 @@ import java.util.Map;
 
 public class Square extends Shapes{
 
-    private int length;
-    private Point corner;
+    private int width;
+    private  int height;
+    private Point topleft;
 
     Square(){
 
@@ -16,28 +17,31 @@ public class Square extends Shapes{
         super(id,p);
     }
 
-    public void assignLength() {
-        String length  = this.properties.get("length");
-        if (length == null){
-            throw new RuntimeException("length of square missing");
+    public void assignW_H() {
+        String width  = this.properties.get("width");
+        String height  = this.properties.get("height");
+
+        if (width == null || height == null ){
+            throw new RuntimeException("Width or Height missing");
         }
-        this.length = Integer.parseInt(length);
+        this.width = Integer.parseInt(width);
+        this.height = Integer.parseInt(height);
     }
 
-    public void assignCorner() {
-        String corner = this.properties.get("corner");
+    public void assignTopleft() {
+        String corner = this.properties.get("topleft");
         if(corner == null){
-            throw new RuntimeException("corner of square missing");
+            throw new RuntimeException("the topleft point of square missing");
         }
         String[] centerArr = corner.split(",");
-        this.corner = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
+        this.topleft = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
     protected String Show() {
-        this.assignLength();
-        this.assignCorner();
-        return "Length: " + this.length + " ,center: ( " + this.corner.x + "," + this.corner.y + " )";
+        this.assignW_H();
+        this.assignTopleft();
+        return "Width: " + this.width + " ,height: " + this.height + " ,center: ( " + this.topleft.x + "," + this.topleft.y + " )";
     }
 
 }

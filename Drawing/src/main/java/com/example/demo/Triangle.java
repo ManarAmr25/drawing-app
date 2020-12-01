@@ -5,8 +5,9 @@ import java.util.Map;
 
 public class Triangle extends Shapes{
 
-    private int length;
-    private Point center;
+    private Point first;
+    private Point second;
+    private Point third;
 
     Triangle(){
 
@@ -15,28 +16,27 @@ public class Triangle extends Shapes{
         super(id,p);
     }
 
-    public void assignLength() {
-        String length  = this.properties.get("length");
-        if (length == null){
-            throw new RuntimeException("length of Triangle missing");
+    private void assignPoints(){
+        String first = this.getProperty("first");
+        String second = this.getProperty("second");
+        String third = this.getProperty("third");
+        if( first ==null || second == null || third == null){
+            throw new RuntimeException("point missing");
         }
-        this.length = Integer.parseInt(length);
-    }
-
-    public void assignCenter() {
-        String center = this.properties.get("center");
-        if(center == null){
-            throw new RuntimeException("center of Triangle missing");
-        }
-        String[] centerArr = center.split(",");
-        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
+        String[] fArr = first.split(",");
+        String[] sArr = second.split(",");
+        String[] tArr = third.split(",");
+        this.first = new Point(Integer.parseInt(fArr[0]),Integer.parseInt(fArr[1]));
+        this.second = new Point(Integer.parseInt(sArr[0]),Integer.parseInt(sArr[1]));
+        this.third = new Point(Integer.parseInt(tArr[0]),Integer.parseInt(tArr[1]));
     }
 
 
     @Override
     protected String Show() {
-        this.assignCenter();
-        this.assignLength();
-        return "Base length: " + this.length + " ,center: ( " +this.center.x + "," +this.center.y + " )";
+        this.assignPoints();
+        return "first: ( " +this.first.x + "," +this.first.y + " )"
+                +" ,second: ( " +this.second.x + "," +this.second.y + " )"
+                +" ,third: ( " +this.third.x + "," +this.third.y + " )";
     }
 }

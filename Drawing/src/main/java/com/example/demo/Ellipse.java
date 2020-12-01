@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class Ellipse extends Shapes{
 
-    private int major;
-    private int minor;
-    private Point center;
+    private int radius_x;
+    private int radius_y;
+    private Point topleft;
 
     Ellipse(){
 
@@ -18,29 +18,29 @@ public class Ellipse extends Shapes{
     }
 
     public void assignAxes() {
-        String major = this.properties.get("major");
-        String minor = this.properties.get("minor");
+        String major = this.properties.get("radius_x");
+        String minor = this.properties.get("radius_y");
         if(major == null || minor == null){
             throw new RuntimeException("major or minor missing");
         }
-        this.major = Integer.parseInt(major);
-        this.minor = Integer.parseInt(minor);
+        this.radius_x = Integer.parseInt(major);
+        this.radius_y = Integer.parseInt(minor);
     }
 
-    public void assignCenter() {
-        String center = this.properties.get("center");
-        if(center == null){
-            throw new RuntimeException("center missing");
+    public void assignTopleft() {
+        String corner = this.properties.get("topleft");
+        if(corner == null){
+            throw new RuntimeException("the topleft point of ellipse missing");
         }
-        String[] centerArr = center.split(",");
-        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
+        String[] centerArr = corner.split(",");
+        this.topleft = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
     protected String Show() {
         this.assignAxes();
-        this.assignCenter();
-        return "major axis: " + this.major + " ,minor axis: " + this.minor + " ,center: ( " +this.center.x + "," +this.center.y + " )";
+        this.assignTopleft();
+        return "major axis: " + this.radius_x + " ,minor axis: " + this.radius_y + " ,center: ( " +this.topleft.x + "," +this.topleft.y + " )";
     }
 
 }

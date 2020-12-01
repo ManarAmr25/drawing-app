@@ -7,7 +7,7 @@ public class Rectangle extends Shapes{
 
     private int width;
     private int height;
-    private Point corner;
+    private Point topleft;
 
     Rectangle(){
 
@@ -27,19 +27,19 @@ public class Rectangle extends Shapes{
         this.height = Integer.parseInt(height);
     }
 
-    public void assignCorner() {
-        String corner = this.properties.get("corner");
+    public void assignTopleft() {
+        String corner = this.properties.get("topleft");
         if(corner == null){
             throw new RuntimeException("center of rectangle missing");
         }
         String[] centerArr = corner.split(",");
-        this.corner = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
+        this.topleft = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
     protected String Show() {
         this.assignW_H();
-        this.assignCorner();
-        return "Width: " + this.width + " ,height: " + this.height + " ,center: ( " + this.corner.x + "," + this.corner.y + " )";
+        this.assignTopleft();
+        return "Width: " + this.width + " ,height: " + this.height + " ,center: ( " + this.topleft.x + "," + this.topleft.y + " )";
     }
 }

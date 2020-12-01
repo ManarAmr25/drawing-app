@@ -6,7 +6,7 @@ import java.util.Map;
 public class Circle extends Shapes {
 
     private int radius;
-    private Point center;
+    private Point topleft;
 
     Circle(){
 
@@ -23,19 +23,19 @@ public class Circle extends Shapes {
         this.radius = Integer.parseInt(radius);
     }
 
-    public void assignCenter() {
-        String center = this.properties.get("center");
-        if(center == null){
-            throw new RuntimeException("center missing");
+    public void assignTopleft() {
+        String corner = this.properties.get("topleft");
+        if(corner == null){
+            throw new RuntimeException("the topleft point of circle missing");
         }
-        String[] centerArr = center.split(",");
-        this.center = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
+        String[] centerArr = corner.split(",");
+        this.topleft = new Point(Integer.parseInt(centerArr[0]),Integer.parseInt(centerArr[1]));
     }
 
     @Override
     protected String Show() {
         this.assignRadius();
-        this.assignCenter();
-        return "radius: " + this.radius + " ,center: ( " +this.center.x + "," +this.center.y + " )";
+        this.assignTopleft();
+        return "radius: " + this.radius + " ,center: ( " +this.topleft.x + "," +this.topleft.y + " )";
     }
 }
