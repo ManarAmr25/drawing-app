@@ -4,6 +4,12 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
 
@@ -28,13 +34,23 @@ public class App {
     }
 
     public boolean Save(String path, String type){
+        //TODO handle files overwriting??
         if(type.equalsIgnoreCase("XML")){
-
+            try {
+                FileOutputStream file = new FileOutputStream(path);
+                XMLEncoder encoder = new XMLEncoder(file);
+                encoder.writeObject(this.current);
+                encoder.close();
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }else if(type.equalsIgnoreCase("JSON")){
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-                writer.writeValue(Paths.get(path).toFile(), current);
+                writer.writeValue(Paths.get(path).toFile(), this.current);
                 return true;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -45,11 +61,20 @@ public class App {
     }
     public boolean Load(String path, String type){
         if(type.equalsIgnoreCase("XML")){
-
+            try {
+                FileInputStream file = new FileInputStream(path);
+                XMLDecoder decoder = new XMLDecoder(file);
+                this.current = (Drawing) decoder.readObject();
+                decoder.close();
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }else if(type.equalsIgnoreCase("JSON")){
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                current = mapper.readValue(Paths.get(path).toFile(), Drawing.class);
+                this.current = mapper.readValue(Paths.get(path).toFile(), Drawing.class);
                 return true;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -60,7 +85,7 @@ public class App {
     }
 
     public void NewPage(){
-        current = new Drawing(true);
+        this.current = new Drawing(true);
     }
 
     public Map<Integer, Shapes> GetList(){ // undo & redo
