@@ -1,33 +1,66 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 createApp(App).mount('#app')
+import * as axios from "core-js";
 export const recreate = {
-     draw(){
+    draw() {
 
-    var canvas = document.getElementById('myCanvas');
-    if (canvas.getContext) {
-        var context = canvas.getContext('2d');
-        context.canvas.width = 1320;
-        context.canvas.height = 600;
+        var canvas = document.getElementById('myCanvas');
+        if (canvas.getContext) {
+            var context = canvas.getContext('2d');
+            context.canvas.width = 1320;
+            context.canvas.height = 600;
 
-        for (var x = 0; x < canvas.width; x += 50) {
-            context.moveTo(x, 0);
-            context.lineTo(x, canvas.height);
+            for (var x = 0; x < canvas.width; x += 50) {
+                context.moveTo(x, 0);
+                context.lineTo(x, canvas.height);
+
+            }
+
+            for (var y = 0; y < canvas.height; y += 50) {
+                context.moveTo(0, y);
+                context.lineTo(canvas.width, y);
+
+            }
+            context.lineWidth = 0.9;
+            context.strokeStyle = '#c9c7c7';
+            context.stroke();
+
 
         }
+    },
 
-        for (var y = 0; y < canvas.height; y += 50) {
-            context.moveTo(0, y);
-            context.lineTo(canvas.width, y);
+    enable(){
+        axios.get("http://localhost:8085/undo")
+            .then(function (response) {
+                if (response != null) {
+                    document.getElementById("undo").className = "btn";
+                }
+            })
 
-        }
-        context.lineWidth = 0.9;
-        context.strokeStyle = '#c9c7c7';
-        context.stroke();
+        axios.get("http://localhost:8085/redo")
+            .then(function (response) {
+                if (response != null) {
+                    document.getElementById("redo").className = "btn";
+                }
+            })
+    },
+    disable() {
+        axios.get("http://localhost:8085/undo")
+            .then(function (response) {
+                if (response == null) {
+                    document.getElementById("undo").className = "disabled";
+                }
+            })
 
-
+        axios.get("http://localhost:8085/redo")
+            .then(function (response) {
+                if (response == null) {
+                    document.getElementById("redo").className = "disabled";
+                }
+            })
     }
-}
+
 }
 
 //calculate coordinates
@@ -44,9 +77,11 @@ export const fun = {
 };
 
 recreate.draw();
+recreate.enable();
+recreate.disable();
 
 window.onclick = function (event) {
-    if (event.target == document.getElementById("myModal") ) {
+    if (event.target == document.getElementById("myModal")) {
         document.getElementById("myModal").style.display = "none";
     }
     if (event.target == document.getElementById("myModal2")) {
@@ -56,7 +91,3 @@ window.onclick = function (event) {
         document.getElementById("myModal1").style.display = "none";
     }
 }
-
-
-
-
