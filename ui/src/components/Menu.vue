@@ -6,7 +6,7 @@
       <div class="modal-content">
         <span class="close" @click="close(0)">&times;</span>
         <button class="open" @click="savecurrentFile()">Save current folder</button><br><br>
-        <button class="open" >Discard current folder</button>
+        <button class="open" @click="newfile()">Discard current folder</button>
       </div></div>
 
     <!-- button save -->
@@ -16,13 +16,13 @@
         <span class="close" @click="close(1)">&times;</span>
         <h1>Save file</h1>
         <label for="fname">File name:</label><br>
-        <input type="text" id="fname" name="fname" required><br><br>
+        <input type="text" id="fname" name="fname" required autocomplete="off"><br><br>
         <input type="radio" id="json" name="type" value="json" checked>
         <label for="json">.json</label><br>
         <input type="radio" id="xml" name="type" value="xml">
         <label for="xml">.xml</label><br><br>
         <label for="fpath">Enter the path of the folder to be saved in:</label><br>
-        <input type="text" id="fpath" name="fpath" required><br><br>
+        <input type="text" id="fpath" name="fpath" required autocomplete="off"><br><br>
         <button class="open" @click="save()">Save file</button>
 
       </div>
@@ -34,11 +34,10 @@
       <div class="modal-content">
         <span class="close" @click="close(2)">&times;</span>
         <label for="fname">File name:</label><br>
-        <input type="text" id="fname1" name="fname" required><br><br>
+        <input type="text" id="fname1" name="fname" required autocomplete="off"><br><br>
         <label for="fpath">Enter the path of the folder which the file is saved  in:</label><br>
-        <input type="text" id="fpath2" name="fpath" required><br><br>
-
-        <button class="open">open file</button>
+        <input type="text" id="fpath1" name="fpath" required autocomplete="off"><br><br>
+        <button class="open" @click="open()">open file</button>
       </div></div>
     <!-- button undo -->
     <button class="disabled" ><span style='font-weight:bold;'>&#8630;</span> UNDO</button>
@@ -50,18 +49,30 @@
 </template>
 
 <script>
-
+import Shapes from "@/components/Shapes";
+import * as axios from "core-js";
+var newf=false;
 export default {
   name: "Menu",
-
   methods: {
     enable(){
+      //undo,redo
       document.getElementById("MyElement").className = "btn";
     },
 
     savecurrentFile(){
+      newf=true;
       document.getElementById("myBtn1").click();
       document.getElementsByClassName("close")[0].click();
+    },
+
+    newfile(){
+      Shapes.methods.clear();
+      // send to backend axios
+      axios.get("http://localhost:8085/new")
+      if(newf==false){
+        document.getElementsByClassName("close")[0].click();}
+
     },
 
     close(number){
@@ -73,6 +84,49 @@ export default {
       }else{
         document.getElementById("myModal2").style.display="none";
       }
+    },
+    save(){
+      var ext;
+      if( document.getElementById("json").checked){
+        ext=".json";
+      }else{
+        ext=".xml"
+      }
+
+      //backend axios
+      axios.get("http://localhost:8085/save", {
+        params: {
+          name:document.getElementById("fname").value,
+          path:document.getElementById("fpath").value,
+          extenstion:ext
+        }
+      })
+      if(newf){
+        newf=false;
+        this.newfile();
+
+      }
+
+
+      document.getElementsByClassName("close")[1].click();
+
+    },
+    open(){
+      Shapes.methods.clear();
+      //axios
+      axios.get("http://localhost:8085/load", {
+        params: {
+          name:document.getElementById("fname1").value,
+          path:document.getElementById("fpath1").value
+        }
+      }).then(function (response) {
+        console.log(response);
+        //take map
+        //then draw again ?? equal list flag >> false in redraw
+      })
+
+      document.getElementsByClassName("close")[2].click();
+
     },
 
     openmodal(number){
@@ -87,11 +141,9 @@ export default {
     }
 
   },
-  save(){
-    //take name and type to save and download
-    document.getElementById("json").checked;
 
-  }
+
+
 }
 </script>
 

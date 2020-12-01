@@ -11,10 +11,12 @@
   <br>
   <div id="model" class="modalsh">
     <div class="content">
-      <button id="close" v-on:click="redraw(false)">&times;</button>
+      <button id="close" v-on:click="redraw(false,1)">&times;</button>
       <button id="del" v-on:click="deletes()"> delete</button>
       <button id="copy" v-on:click="copy()"> copy</button>
       <br>
+      <div id="co"> customize the copied shape</div>
+      <div id="main">
       <label for="fillcolor">fill-color</label>
       <input id="fillcolor" type="color">
         <br>
@@ -24,7 +26,14 @@
       <label for="bordercolor">border color</label>
       <input id="bordercolor" type="color">
       <br>
-
+      </div>
+      <div id="lmode">
+        <label for="lcolor">color</label>
+        <input id="lcolor" type="color">
+        <br>
+        <label for="lwidth">width</label>
+        <input id="lwidth" type="number" min="0">
+      </div>
       <div id="mode0">
         <span> top-left coordinates of shape</span>
         <br>
@@ -95,7 +104,8 @@
       <input id="rady" type="number" min="0">
       </div>
       <br>
-      <button id="ok" v-on:click="redraw(true)">ok</button>
+      <button id="ok" v-on:click="redraw(true,1)">ok</button>
+      <button id="ok2" v-on:click="redraw(true,2)">ok</button>
     </div>
   </div>
 
@@ -151,7 +161,14 @@ function init() {
           var slope = (c.y-c.h)/(c.x-c.w);
           var b = c.y-slope*c.x;
           console.log("right = "+(slope*x+b));
-          if(Math.abs(y-(slope*x+b))<=20){
+          if(c.x==c.w){
+            if(Math.abs(c.x-x)<=10&&y>=c.y&&c.y<=c.h){
+              sel = true;
+              create_layout(i);
+              break;
+            }
+          }
+          else if(Math.abs(y-(slope*x+b))<=20){
             sel = true;
             create_layout(i);
             break;
@@ -189,6 +206,9 @@ function create_layout(n){
     }
 
   }
+    showoptions();
+}
+function showoptions() {
   //show options
   document.getElementById("model").style.display = "block";
   document.getElementById("fillcolor").value = selShape.fcolor;
@@ -197,7 +217,15 @@ function create_layout(n){
     document.getElementById('bordercolor').value=selShape.bordercolor;
   }
   if(selShape.t=="t"||selShape.t=='l'){
+
     document.getElementById("mode1").style.display = "block";
+    if(selShape.t=='l'){
+      document.getElementById('main').style.display="none";
+      document.getElementById('lmode').style.display="block";
+
+      document.getElementById("lcolor").value = selShape.fcolor;
+      document.getElementById('lwidth').value=selShape.borderwidth;
+    }
     if(selShape.t=="t"){
       document.getElementById("tmode").style.display = "block";
       document.getElementById('p1x').value=selShape.x1;
@@ -400,10 +428,11 @@ export default {
       }
 
     },
-   redraw(flag){
+   redraw(flag,n){
      document.getElementById("model").style.display = "none";
       if(flag){
         var m = new Map()
+        var type;
         selShape.fcolor=document.getElementById('fillcolor').value;
         selShape.borderwidth=document.getElementById('borderwidth').value;
         selShape.bordercolor=document.getElementById('bordercolor').value;
@@ -414,6 +443,7 @@ export default {
           selShape.border=true
         }
         if(selShape.t=="l"){
+          type="line"
           selShape.x=document.getElementById('p1x').value;
           selShape.y=document.getElementById('p1y').value;
           selShape.w=document.getElementById('p2x').value;
@@ -422,6 +452,12 @@ export default {
           m.set("second",(selShape.w,selShape.h))
         }
         else if(selShape.t=='s'||selShape.t=='r'){
+          if(selShape.t=='s'){
+            type="square"
+          }
+          else{
+            type="rectangle"
+          }
           selShape.x=document.getElementById('x').value;
           selShape.y=document.getElementById('y').value;
           selShape.w=document.getElementById('wid').value;
@@ -431,6 +467,7 @@ export default {
           m.set("height",selShape.h)
         }
         else if(selShape.t=="t"){
+          type="triangle"
           selShape.x1=document.getElementById('p1x').value;
           selShape.y1=document.getElementById('p1y').value;
           selShape.x2=document.getElementById('p2x').value;
@@ -442,6 +479,7 @@ export default {
           m.set("third",(selShape.x3,selShape.y3))
         }
         else if(selShape.t=="c"){
+          type="circle"
           selShape.x=document.getElementById('x').value;
           selShape.y=document.getElementById('y').value;
           selShape.w=document.getElementById('rad').value;
@@ -449,6 +487,7 @@ export default {
           m.set("radius",selShape.w)
         }
         else{
+          type="ellipse"
           selShape.x=document.getElementById('x').value;
           selShape.y=document.getElementById('y').value;
           selShape.w=document.getElementById('radx').value;
@@ -457,6 +496,22 @@ export default {
           m.set("radius-x",selShape.w)
           m.set("radius-y",selShape.h)
         }
+        if(n==2){
+          var index = list.length;
+          list.push(selShape)
+          axios.get("http://localhost:8085/create",{
+          params:{
+            type:type
+          }
+          })
+              .then(function (response) {
+                mapping.set(response,index)
+                list[index].id=response;
+              })
+        }
+
+
+
         axios.get("http://localhost:8085/edit", {
           params: {
             id:selShape.id,
@@ -491,9 +546,11 @@ export default {
       this.redraw(false)
     },
     copy(){
-      document.getElementById("model").style.display = "none";
-      list.push(selShape)
-      this.redraw(false)
+      document.getElementById("copy").style.display = "none";
+      document.getElementById("del").style.display = "none";
+      document.getElementById("ok").style.display = "none";
+      document.getElementById("ok2").style.display = "block";
+      document.getElementById("co").style.display = "block";
     },
     clear(){
       recreate.draw();
@@ -588,7 +645,7 @@ button:hover{
   margin:0px ;
   float: right;
 }
-#ok{
+#ok,#ok2{
   margin-top: 6px;
   float: right;
 }
@@ -618,7 +675,7 @@ span{
 
 }
 
-#mode1,#mode2,#mode3 ,#tmode,#mode0,#mode{
+#mode1,#mode2,#mode3 ,#tmode,#mode0,#mode,#lmode,#co,#ok2{
 display: none;
 }
 </style>
