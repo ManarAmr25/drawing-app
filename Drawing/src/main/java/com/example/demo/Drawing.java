@@ -2,9 +2,10 @@ package com.example.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.xml.bind.JAXBContext;
+import java.io.Serializable;
 import java.util.*;
 
-public class Drawing {
+public class Drawing implements Serializable {
 
     /*
      * NOTE: a trash is needed to restore deleted shapes
@@ -34,6 +35,7 @@ public class Drawing {
     private Deque<action> redo;
     private Map<Integer,Shapes> list;
     private Map<Integer,Shapes> trash;
+    private ShapeFactory factory = new ShapeFactory();
 
     Drawing(){
 
@@ -95,7 +97,7 @@ public class Drawing {
 
     public Integer Add(String type){
         Integer id = generateId();
-        Shapes s = ShapeFactory.getShape(type, id);
+        Shapes s = factory.getShape(type, id);
         action a = new action("create",id);
         this.list.put(id,s);
         this.undo.add(a);

@@ -1,6 +1,8 @@
 package com.example.demo;
 
-public class action {
+import java.io.Serializable;
+
+public class action implements Serializable {
     private String actionType;
     private Integer id;
     private String property;

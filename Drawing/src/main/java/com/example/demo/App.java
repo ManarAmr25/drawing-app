@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -107,5 +106,21 @@ public class App {
 
     public void Delete(Integer id){
         this.current.Delete(id);
+    }
+
+    public boolean Undo(){
+        if (this.current.getUndo().size() == 0){
+            return false;
+        }
+        this.current.Undo();
+        return true;
+    }
+
+    public boolean Redo(){
+        if(this.current.getRedo().size() == 0){
+            return false;
+        }
+        this.current.Redo();
+        return true;
     }
 }

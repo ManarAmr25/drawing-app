@@ -1,9 +1,10 @@
 package com.example.demo;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Map;
 
-public  abstract class Shapes implements Cloneable {
+public class Shapes implements Cloneable , Serializable {
 
     Integer id;
     Map<String,String> properties;
@@ -39,7 +40,9 @@ public  abstract class Shapes implements Cloneable {
         return super.clone();
     }
 
-    protected abstract String Show();
+    protected String Show(){
+        return null;
+    };
 
     public boolean setProperty(String property , String value){
         property = property.toLowerCase();

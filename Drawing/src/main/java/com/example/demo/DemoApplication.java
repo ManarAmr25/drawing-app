@@ -8,6 +8,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.awt.*;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -30,7 +32,8 @@ public class DemoApplication {
         }catch (Exception e){
             System.out.println(e);
         }*/
-        Drawing d = new Drawing(true);
+        //--------------------------------------------------------------------------
+        /*Drawing d = new Drawing(true);
         Integer c1 = d.Add("circle");
         Integer sq1 = d.Add("square");
         Integer t1 = d.Add("triangle");
@@ -127,7 +130,36 @@ System.out.println("-----------------------------------------------");
             System.out.println(x);
         }
         System.out.println("-----------------------------------------------");
+        */
 
+        App a = App.Get();
+        System.out.println(a);
+
+        a.NewPage();
+        Map<Integer,Shapes> m = a.GetList();
+        Integer tempID = a.Create("Line");
+        System.out.println(tempID);
+        Integer tempID1 = a.Create("circle");
+        System.out.println(tempID1);
+        System.out.println(a.Create("Line"));
+
+        for (Integer x : m.keySet()){
+            System.out.println(m.get(x));
+        }
+
+        a.Delete(tempID);
+        Map<String,String> props = new HashMap<>();
+        props.put("radius","410");
+        props.put("color","000000");
+        a.Edit(tempID1,props);
+
+        m = a.GetList();
+        for (Integer x : m.keySet()){
+            System.out.println(m.get(x));
+        }
+
+        //a.Save("myJsonFile.json","json");
+        a.Save("myXmlFile.xml","XML");
 
     }
 

@@ -17,6 +17,7 @@ public class Controller {
     edit >> "/edit", id, Map<property,newValue>
     delete shape >> "/delete", id
      */
+
      App a = App.Get();
 
     // "/new"
@@ -35,9 +36,20 @@ public class Controller {
         return this.a.GetList();
     }
 
-    // "/change"
-    public Map<Integer, Shapes> Change(){
-        return this.a.GetList();
+    // "/undo"
+    public Map<Integer,Shapes> Undo(){
+        if (!a.Undo()){
+            return null;
+        }
+        return a.GetList();
+    }
+
+    // "/redo"
+    public Map<Integer,Shapes> Redo(){
+        if(!a.Redo()){
+            return null;
+        }
+        return a.GetList();
     }
 
     // "/create"

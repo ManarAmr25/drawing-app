@@ -43,5 +43,4 @@ public class Square extends Shapes{
         this.assignTopleft();
         return "Width: " + this.width + " ,height: " + this.height + " ,center: ( " + this.topleft.x + "," + this.topleft.y + " )";
     }
-
 }
