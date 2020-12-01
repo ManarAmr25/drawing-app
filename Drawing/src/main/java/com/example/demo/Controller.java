@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -20,23 +22,24 @@ public class Controller {
 
      App a = App.Get();
 
-    // "/new"
+    @GetMapping("/new")
     public void NewDrawing(){
         a.NewPage();
     }
 
-    // "/save"
-    public void Save(String name, String path, String extension){ // .json .xml
+    @GetMapping("/save")
+    public void Save(@RequestParam(value = "name") String name,@RequestParam(value = "path") String path,@RequestParam(value = "extension") String extension){ // .json .xml
         this.a.Save(path + name + extension,extension.substring(1));
     }
 
-    // "/load"
-    public Map<Integer, Shapes> Load(String name, String path, String extension){
+    @GetMapping("/load")
+    public Map<Integer, Shapes> Load(@RequestParam(value = "name")String name, @RequestParam(value = "path")String path, @RequestParam(value = "extension") String extension){
         this.a.Load(path + name , extension.substring(1));
         return this.a.GetList();
     }
 
     // "/undo"
+    @GetMapping("/undo")
     public Map<Integer,Shapes> Undo(){
         if (!a.Undo()){
             return null;
@@ -45,6 +48,7 @@ public class Controller {
     }
 
     // "/redo"
+    @GetMapping("/redo")
     public Map<Integer,Shapes> Redo(){
         if(!a.Redo()){
             return null;
@@ -53,17 +57,20 @@ public class Controller {
     }
 
     // "/create"
-    public Integer Create(String type){
+    @GetMapping("/create")
+    public Integer Create(@RequestParam(value = "type") String type){
         return this.a.Create(type);
     }
 
     // "/edit"
-    public void Edit(Integer id,Map<String, String> m){
+    @GetMapping("/edit")
+    public void Edit(@RequestParam(value = "id") Integer id,@RequestParam(value = "m") Map<String, String> m){
          this.a.Edit(id,m);
     }
 
     // "/delete"
-    public void Delete(Integer id){
+    @GetMapping("/delete")
+    public void Delete(@RequestParam(value = "id") Integer id){
         this.a.Delete(id);
     }
 }
