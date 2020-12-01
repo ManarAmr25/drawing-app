@@ -8,7 +8,6 @@
     <div id="shapes">
     <Shapes/>
     </div>
-
     <div id="navigation_bar">
       {{coo}}
     </div>

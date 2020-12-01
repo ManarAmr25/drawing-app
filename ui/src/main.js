@@ -1,12 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 createApp(App).mount('#app')
-function draw() {
+export const recreate = {
+     draw(){
 
     var canvas = document.getElementById('myCanvas');
     if (canvas.getContext) {
         var context = canvas.getContext('2d');
-        context.canvas.width  = 1320;
+        context.canvas.width = 1320;
         context.canvas.height = 600;
 
         for (var x = 0; x < canvas.width; x += 50) {
@@ -27,6 +28,7 @@ function draw() {
 
     }
 }
+}
 
 //calculate coordinates
 export const fun = {
@@ -41,7 +43,7 @@ export const fun = {
     }
 };
 
-draw();
+recreate.draw();
 
 window.onclick = function (event) {
     if (event.target == document.getElementById("myModal") ) {
@@ -54,8 +56,6 @@ window.onclick = function (event) {
         document.getElementById("myModal1").style.display = "none";
     }
 }
-
-
 
 
 
