@@ -21,14 +21,14 @@ public class ShapeFactory {
         lmap.put("first","500,200");
         lmap.put("second","700,400");
         lmap.put("borderwidth","7");
-        lmap.put("fillcolor","0000ff");
+        lmap.put("fillcolor","#0000ff");
         lmap.put("type","line");
         this.l = new Line(-1,lmap);
         //create circle
         Map<String,String> cmap = new HashMap<>();
         cmap.put("topleft","500,200");
         cmap.put("radius","100");
-        cmap.put("fillcolor","0000ff");
+        cmap.put("fillcolor","#0000ff");
         cmap.put("type","circle");
         this.c = new Circle(-1,cmap);
         //create ellipse
@@ -36,7 +36,7 @@ public class ShapeFactory {
         emap.put("topleft","500,200");
         emap.put("radius_x","80");
         emap.put("radius_y","50");
-        emap.put("fillcolor","0000ff");
+        emap.put("fillcolor","#0000ff");
         emap.put("type","ellipse");
         this.e = new Ellipse(-1,emap);
         //create square
@@ -44,7 +44,7 @@ public class ShapeFactory {
         smap.put("width","100");
         smap.put("height","100");
         smap.put("topleft","500,200");
-        smap.put("fillcolor","0000ff");
+        smap.put("fillcolor","#0000ff");
         smap.put("type","square");
         this.s = new Square(-1,smap);
         //create rectangle
@@ -52,7 +52,7 @@ public class ShapeFactory {
         rmap.put("width","150");
         rmap.put("height","100");
         rmap.put("topleft","500,200");
-        rmap.put("fillcolor","0000ff");
+        rmap.put("fillcolor","#0000ff");
         rmap.put("type","rectangle");
         this.r = new Rectangle(-1,rmap);
         //create triangle
@@ -60,7 +60,7 @@ public class ShapeFactory {
         tmap.put("first","500,200");
         tmap.put("second","400,400");
         tmap.put("third","600,400");
-        tmap.put("fillcolor","0000ff");
+        tmap.put("fillcolor","#0000ff");
         tmap.put("type","triangle");
         this.t = new Triangle(-1,tmap);
     }
