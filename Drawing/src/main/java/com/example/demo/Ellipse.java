@@ -17,7 +17,7 @@ public class Ellipse extends Shapes{
         super(id, p);
     }
 
-    public void assignAxes() {
+    private void assignAxes() {
         String major = this.properties.get("radius_x");
         String minor = this.properties.get("radius_y");
         if(major == null || minor == null){
@@ -27,7 +27,7 @@ public class Ellipse extends Shapes{
         this.radius_y = Integer.parseInt(minor);
     }
 
-    public void assignTopleft() {
+    private void assignTopleft() {
         String corner = this.properties.get("topleft");
         if(corner == null){
             throw new RuntimeException("the topleft point of ellipse missing");

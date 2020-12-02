@@ -15,7 +15,7 @@ public class Circle extends Shapes {
         super(id,p);
     }
 
-    public void assignRadius() {
+    private void assignRadius() {
         String radius  = this.properties.get("radius");
         if (radius == null){
             throw new RuntimeException("radius missing");
@@ -23,7 +23,7 @@ public class Circle extends Shapes {
         this.radius = Integer.parseInt(radius);
     }
 
-    public void assignTopleft() {
+    private void assignTopleft() {
         String corner = this.properties.get("topleft");
         if(corner == null){
             throw new RuntimeException("the topleft point of circle missing");

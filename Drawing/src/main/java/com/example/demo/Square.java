@@ -17,7 +17,7 @@ public class Square extends Shapes{
         super(id,p);
     }
 
-    public void assignW_H() {
+    private void assignW_H() {
         String width  = this.properties.get("width");
         String height  = this.properties.get("height");
 
@@ -28,7 +28,7 @@ public class Square extends Shapes{
         this.height = Integer.parseInt(height);
     }
 
-    public void assignTopleft() {
+    private void assignTopleft() {
         String corner = this.properties.get("topleft");
         if(corner == null){
             throw new RuntimeException("the topleft point of square missing");
