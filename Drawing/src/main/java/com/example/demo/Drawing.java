@@ -37,11 +37,11 @@ public class Drawing implements Serializable {
     private Map<Integer,Shapes> trash;
     private ShapeFactory factory = new ShapeFactory();
 
-    Drawing(){
+    public Drawing(){
 
     }
 
-    Drawing(boolean isNew){
+    public Drawing(boolean isNew){
         if(isNew){
             this.undo = new ArrayDeque<action>();
             this.redo = new ArrayDeque<action>();

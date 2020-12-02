@@ -9,16 +9,16 @@ public class action implements Serializable {
     private String oldValue;
     private String newValue;
 
-    action(){
+    public action(){
 
     }
 
-    action(String actionType, Integer id){ //for create and delete
+    public action(String actionType, Integer id){ //for create and delete
         this.actionType = actionType.toLowerCase();
         this.id = id;
     }
 
-    action(String property , String oldValue , String newValue,Integer id){ //modify
+    public action(String property , String oldValue , String newValue,Integer id){ //modify
         this.property = property;
         this.newValue = newValue;
         this.oldValue = oldValue;

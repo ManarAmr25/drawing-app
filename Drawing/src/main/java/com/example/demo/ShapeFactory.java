@@ -15,7 +15,7 @@ public class ShapeFactory {
     private Rectangle r;
     private Triangle t;
 
-    ShapeFactory(){
+    public ShapeFactory(){
         //create line
         Map<String,String> lmap = new HashMap<>();
         lmap.put("first","500,200");

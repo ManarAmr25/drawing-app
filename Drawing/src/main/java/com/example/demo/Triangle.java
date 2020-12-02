@@ -9,10 +9,10 @@ public class Triangle extends Shapes{
     private Point second;
     private Point third;
 
-    Triangle(){
+    public Triangle(){
 
     }
-    Triangle(Integer id, Map<String,String> p){
+    public Triangle(Integer id, Map<String,String> p){
         super(id,p);
     }
 

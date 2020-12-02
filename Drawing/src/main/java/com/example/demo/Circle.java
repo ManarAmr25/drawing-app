@@ -8,10 +8,10 @@ public class Circle extends Shapes {
     private int radius;
     private Point topleft;
 
-    Circle(){
+    public Circle(){
 
     }
-    Circle( Integer id, Map<String,String> p){
+    public Circle( Integer id, Map<String,String> p){
         super(id,p);
     }
 

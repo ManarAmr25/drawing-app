@@ -9,11 +9,11 @@ public class Ellipse extends Shapes{
     private int radius_y;
     private Point topleft;
 
-    Ellipse(){
+    public Ellipse(){
 
     }
 
-    Ellipse(Integer id, Map<String,String> p) {
+    public Ellipse(Integer id, Map<String,String> p) {
         super(id, p);
     }
 

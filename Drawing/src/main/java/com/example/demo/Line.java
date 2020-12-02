@@ -9,11 +9,11 @@ public class Line extends Shapes{
     private Point second;
     private int width;
 
-    Line(){
+    public Line(){
 
     }
 
-    Line( Integer id, Map<String,String>p){
+    public Line( Integer id, Map<String,String>p){
         super(id,p);
     }
 

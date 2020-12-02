@@ -9,10 +9,10 @@ public class Rectangle extends Shapes{
     private int height;
     private Point topleft;
 
-    Rectangle(){
+    public Rectangle(){
 
     }
-    Rectangle(Integer id, Map<String,String> p){
+    public Rectangle(Integer id, Map<String,String> p){
         super(id,p);
     }
 

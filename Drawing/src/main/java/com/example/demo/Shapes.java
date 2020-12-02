@@ -6,15 +6,15 @@ import java.util.Map;
 
 public class Shapes implements Cloneable , Serializable {
 
-    Integer id;
-    Map<String,String> properties;
+    public Integer id;
+    public Map<String,String> properties;
 
 
-    Shapes(){
+    public Shapes(){
 
     }
 
-    Shapes(Integer id, Map<String,String> p) {
+    public Shapes(Integer id, Map<String,String> p) {
         this.properties = p;
         this.id = id;
     }

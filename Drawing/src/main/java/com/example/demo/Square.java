@@ -9,11 +9,11 @@ public class Square extends Shapes{
     private  int height;
     private Point topleft;
 
-    Square(){
+    public Square(){
 
     }
 
-    Square(Integer id, Map<String,String> p){
+    public Square(Integer id, Map<String,String> p){
         super(id,p);
     }
 
