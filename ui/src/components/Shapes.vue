@@ -155,12 +155,9 @@ function init() {
         var c = list[i];
         sh.methods.drawing(c,temp, true);
         const ctx = temp.getContext('2d');
-        console.log("x: " + x + "  y: " + y + " val: " + ctx.isPointInPath(x, y));
-        console.log("mx: " + e.clientX + "  my: " + e.clientY)
         if(c.t=='l'){
           var slope = (c.y-c.h)/(c.x-c.w);
           var b = c.y-slope*c.x;
-          console.log("right = "+(slope*x+b));
           if(c.x==c.w){
             if(Math.abs(c.x-x)<=10&&y>=c.y&&c.y<=c.h){
               sel = true;
@@ -391,11 +388,11 @@ export default {
 
         }
       else if(shape.t=='s'||shape.t=="r"){ //draw rectangle or square
-          console.log("draw: "+ctx.fillStyle)
           ctx.beginPath();
           ctx.rect(shape.x, shape.y, shape.w, shape.h)
           ctx.fillStyle = shape.fcolor
-          ctx.fill();
+          console.log("drawfill: "+shape.fcolor)
+        // ctx.fillRect(shape.x,shape.y,shape.w,shape.h);
           if(shape.border){
             ctx.strokeStyle=shape.bordercolor;
             ctx.lineWidth=shape.borderwidth;
@@ -437,6 +434,9 @@ export default {
           }
         }
       if(flag){
+        ctx.fillStyle=shape.fcolor
+        console.log("before fill shape :"+shape.fcolor)
+        console.log("beforefill ctx: "+ctx.fillStyle)
         ctx.fill();
       }
 
@@ -449,7 +449,6 @@ export default {
         var m = new Map()
         var type;
         selShape.fcolor=document.getElementById('fillcolor').value;
-        console.log("int : "+selShape.fcolor)
         selShape.borderwidth=document.getElementById('borderwidth').value;
         selShape.bordercolor=document.getElementById('bordercolor').value;
         m["fillcolor"]=String(selShape.fcolor);
@@ -461,7 +460,6 @@ export default {
         if(selShape.t=="l"){
           type="line"
           selShape.borderwidth=document.getElementById('lwidth').value;
-          console.log("re : "+selShape.borderwidth);
           selShape.fcolor=document.getElementById('lcolor').value;
           selShape.x=document.getElementById('p1x').value;
           selShape.y=document.getElementById('p1y').value;
@@ -530,7 +528,6 @@ export default {
         }
 
 
-        console.log("id :  "+parseInt(selShape.id) + " sel :"+selShape.id)
         m["id"]=String(selShape.id);
         var a=m;
        axios.post("http://localhost:8085/edit", {
@@ -540,15 +537,17 @@ export default {
       }
 
       //change in list
-     console.log("id2: "+mapping.get(selShape.id))
-     list[parseInt(mapping.get(selShape.id))]=selShape;
-
+     if(sel&&n!=2) {
+       list[parseInt(mapping.get(selShape.id))] = selShape
+     }
      sel=false;
      selShape=null;
-      recreate.draw();
-      console.log("list :"+list[0] +"  len"+list.length)
+      recreate.draw(); 
+      console.log("  len"+list.length)
       for(var i=0;i<list.length;i++){
         var v =list[i];
+        console.log("shape")
+        console.log(v)
         var canvas=document.getElementById('myCanvas');
         this.drawing(v,canvas,true);
       }
@@ -581,22 +580,23 @@ export default {
       selShape=null;
     },
     set_list(m){
-      console.log(m)
-      var x8=x8.map(m)
-      console.log(x8)
+      this.clear();
+      var map=new Map(Object.entries(m))
       var newList=[]
-      for( const [key, value] of m){
-        var id =key;
-        console.log("id : "+key)
-        var type = value.get("type");
+      for( const curr of map.values()) {
+        var m2 = new Map(Object.entries(curr));
+        var id = m2.get("id");
+        mapping[String(id)]=String(newList.length);
+        var value = new Map(Object.entries(m2.get("properties")))
+       var type = value.get("type");
         var fillcolor=value.get("fillcolor"),
             borderwidth=value.get("borderwidth"),
             bordercolor=value.get("bordercolor"),
             border=false;
-        console.log("color : "+fillcolor)
             if(value.has("bordercolor")&&bordercolor!=null&&bordercolor!=undefined){
               border=true
             }
+            console.log("set color : "+fillcolor);
         var i=newList.length
         if(type=="line"){
           var first=value.get("first"),
@@ -648,7 +648,9 @@ export default {
           newList[i].id=id;
         }
       }
-      list=newList;
+
+     list=newList;
+      this.redraw(false,1);
     }
 
     }
