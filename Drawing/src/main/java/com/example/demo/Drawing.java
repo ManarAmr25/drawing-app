@@ -173,7 +173,7 @@ public class Drawing implements Serializable {
             return  false;
         }
         String oldValue = s.getProperty(property);
-        if(oldValue == null){
+        if(oldValue == null || oldValue.equals(newValue)){
             return  false;
         }
         s.setProperty(property, newValue);
