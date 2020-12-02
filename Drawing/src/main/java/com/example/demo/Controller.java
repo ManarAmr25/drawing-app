@@ -1,14 +1,12 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.web.bind.annotation.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/draw")
+@CrossOrigin
 public class Controller {
     /*
     new drawing >> GET:"/new"
@@ -59,13 +57,26 @@ public class Controller {
     // "/create"
     @GetMapping("/create")
     public Integer Create(@RequestParam(value = "type") String type){
+        System.out.println("type: "+type);
         return this.a.Create(type);
     }
 
     // "/edit"
-    @GetMapping("/edit")
-    public void Edit(@RequestParam(value = "id") Integer id,@RequestParam(value = "m") Map<String, String> m){
-         this.a.Edit(id,m);
+    @PostMapping("/edit")
+    public void Edit(@RequestBody String m){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Map<String, String> map = mapper.readValue(m, Map.class);
+            String json =map.get("m");
+            Map<String, String> map2 = mapper.readValue(json, Map.class);
+            System.out.println(map2);
+            System.out.println(map2.get("id"));
+            Integer id = Integer.valueOf(map2.remove("id"));
+            this.a.Edit(id,map2);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     // "/delete"

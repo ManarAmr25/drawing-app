@@ -15,7 +15,7 @@ import java.util.Map;
 public class App {
 
     static volatile App app;
-    private Drawing current;
+    private Drawing current=new Drawing(true);
 
     private App() {}
 
@@ -109,6 +109,8 @@ public class App {
     }
 
     public boolean Undo(){
+        System.out.println("undo");
+        System.out.println(this.current.getUndo().toString());
         if (this.current.getUndo().size() == 0){
             return false;
         }
@@ -117,6 +119,8 @@ public class App {
     }
 
     public boolean Redo(){
+        System.out.println("Redo");
+        System.out.println(this.current.getRedo().toString());
         if(this.current.getRedo().size() == 0){
             return false;
         }

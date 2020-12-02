@@ -16,6 +16,7 @@ public class DemoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
+        /*
         /*try{
             File file = new File("user2.xml");
 
@@ -132,7 +133,7 @@ System.out.println("-----------------------------------------------");
         System.out.println("-----------------------------------------------");
         */
 
-        App a = App.Get();
+    /*    App a = App.Get();
         System.out.println(a);
 
         a.NewPage();
@@ -159,8 +160,8 @@ System.out.println("-----------------------------------------------");
         }
 
         //a.Save("myJsonFile.json","json");
-        a.Save("myXmlFile.xml","XML");
-
+     //   a.Save("myXmlFile.xml","XML");
+*/
     }
 
 

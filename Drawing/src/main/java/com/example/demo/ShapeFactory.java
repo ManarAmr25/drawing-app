@@ -20,20 +20,16 @@ public class ShapeFactory {
         Map<String,String> lmap = new HashMap<>();
         lmap.put("first","500,200");
         lmap.put("second","700,400");
-        lmap.put("width","7");
-        lmap.put("color","0000ff");
+        lmap.put("borderwidth","7");
+        lmap.put("fillcolor","0000ff");
         lmap.put("type","line");
-        lmap.put("borderwidth","0");
-        lmap.put("bordercolor","0000ff");
         this.l = new Line(-1,lmap);
         //create circle
         Map<String,String> cmap = new HashMap<>();
         cmap.put("topleft","500,200");
         cmap.put("radius","100");
-        cmap.put("color","0000ff");
+        lmap.put("color","0000ff");
         cmap.put("type","circle");
-        cmap.put("borderwidth","0");
-        cmap.put("bordercolor","0000ff");
         this.c = new Circle(-1,cmap);
         //create ellipse
         Map<String,String> emap = new HashMap<>();
@@ -41,8 +37,6 @@ public class ShapeFactory {
         emap.put("radius_x","80");
         emap.put("radius_y","50");
         emap.put("color","0000ff");
-        emap.put("borderwidth","0");
-        emap.put("bordercolor","0000ff");
         this.e = new Ellipse(-1,emap);
         //create square
         Map<String,String> smap = new HashMap<>();
@@ -51,8 +45,6 @@ public class ShapeFactory {
         smap.put("topleft","500,200");
         smap.put("color","0000ff");
         smap.put("type","square");
-        smap.put("borderwidth","0");
-        smap.put("bordercolor","0000ff");
         this.s = new Square(-1,smap);
         //create rectangle
         Map<String,String> rmap = new HashMap<>();
@@ -61,8 +53,6 @@ public class ShapeFactory {
         rmap.put("topleft","500,200");
         rmap.put("color","0000ff");
         rmap.put("type","rectangle");
-        rmap.put("borderwidth","0");
-        rmap.put("bordercolor","0000ff");
         this.r = new Rectangle(-1,rmap);
         //create triangle
         Map<String,String> tmap = new HashMap<>();
@@ -71,8 +61,6 @@ public class ShapeFactory {
         tmap.put("third","600,400");
         tmap.put("color","0000ff");
         tmap.put("type","triangle");
-        tmap.put("borderwidth","0");
-        tmap.put("bordercolor","0000ff");
         this.t = new Triangle(-1,tmap);
     }
 
