@@ -115,7 +115,7 @@
 import $ from 'jquery'
 import sh from '@/components/Shapes'
 import {recreate} from "@/main";
-import * as axios from "core-js";
+import axios from 'axios';
 
 var list =[];
 var mapping=new Map(); // key =id,value = index
@@ -287,8 +287,8 @@ export default {
         }
       })
           .then(function (response) {
-              mapping.set(response,index)
-            list[index].id=response;
+              mapping.set(response.data,index)
+            list[index].id=response.data;
           })
     var canvas = document.getElementById('myCanvas');
     this.drawing(x,canvas,true);
@@ -296,6 +296,7 @@ export default {
     square(width,t){
         var x = new shape(500,200,width,100,0,0,0,0,0,0,'#0000ff',false,0,null,t);
         var index = list.length;
+        console.log("index : "+index)
         var type ;
         if(t=='s'){
           type="square"
@@ -310,8 +311,8 @@ export default {
           }
         })
             .then(function (response) {
-              mapping.set(response,index)
-              list[index].id=response;
+              mapping.set(response.data,index)
+              list[index].id=response.data;
             })
       var canvas = document.getElementById('myCanvas');
       this.drawing(x,canvas,true);
@@ -327,8 +328,8 @@ export default {
         }
       })
           .then(function (response) {
-            mapping.set(response,index)
-            list[index].id=response;
+            mapping.set(response.data,index)
+            list[index].id=response.data;
           })
       var canvas = document.getElementById('myCanvas');
       this.drawing(x,canvas,true);
@@ -344,8 +345,8 @@ export default {
         }
       })
           .then(function (response) {
-            mapping.set(response,index)
-            list[index].id=response;
+            mapping.set(response.data,index)
+            list[index].id=response.data;
           })
       var canvas = document.getElementById('myCanvas');
       this.drawing(x,canvas,true);
@@ -361,14 +362,16 @@ export default {
         }
       })
           .then(function (response) {
-            mapping.set(response,index)
-            list[index].id=response;
+            mapping.set(response.data,index)
+            list[index].id=response.data;
           })
       var canvas = document.getElementById('myCanvas');
       this.drawing(x,canvas,true);
 
     },
-    drawing(shape , can , flag){
+    drawing(shape,can , flag){
+      //recreate.enable();
+      //recreate.disable();
       if (can.getContext) {
         var ctx = can.getContext('2d');
         if(shape.t=='l'){ //draw line
@@ -380,12 +383,16 @@ export default {
           ctx.stroke();
         }
       else if(shape.t=='s'||shape.t=="r"){ //draw rectangle or square
-          ctx.fillStyle = shape.fcolor
+          console.log("draw: "+ctx.fillStyle)
+          ctx.beginPath();
           ctx.rect(shape.x, shape.y, shape.w, shape.h)
+          ctx.fillStyle = shape.fcolor
+          ctx.fill();
           if(shape.border){
             ctx.strokeStyle=shape.bordercolor;
             ctx.lineWidth=shape.borderwidth;
             ctx.strokeRect(shape.x,shape.y,shape.w,shape.h);
+
           }
         }
       else if(shape.t=='t'){
@@ -434,22 +441,25 @@ export default {
         var m = new Map()
         var type;
         selShape.fcolor=document.getElementById('fillcolor').value;
+        console.log("int : "+selShape.fcolor)
         selShape.borderwidth=document.getElementById('borderwidth').value;
         selShape.bordercolor=document.getElementById('bordercolor').value;
-        m.set("fillcolor",selShape.fcolor);
-        m.set("borderwidth",selShape.borderwidth);
-        m.set("bordercolor",selShape.bordercolor);
+        m["fillcolor"]=String(selShape.fcolor);
+        m["borderwidth"]=String(selShape.borderwidth);
+        m["bordercolor"]=String(selShape.bordercolor);
         if(selShape.borderwidth>0){
           selShape.border=true
         }
         if(selShape.t=="l"){
           type="line"
+          selShape.borderwidth=document.getElementById('lwidth').value;
+          selShape.bordercolor=document.getElementById('lcolor').value;
           selShape.x=document.getElementById('p1x').value;
           selShape.y=document.getElementById('p1y').value;
           selShape.w=document.getElementById('p2x').value;
           selShape.h=document.getElementById('p2y').value;
-          m.set("first",(selShape.x,selShape.y))
-          m.set("second",(selShape.w,selShape.h))
+          m["first"]=String(selShape.x+","+selShape.y)
+          m["second"]=String(selShape.w+","+selShape.h)
         }
         else if(selShape.t=='s'||selShape.t=='r'){
           if(selShape.t=='s'){
@@ -462,9 +472,9 @@ export default {
           selShape.y=document.getElementById('y').value;
           selShape.w=document.getElementById('wid').value;
           selShape.h=document.getElementById('height').value;
-          m.set("topleft",(selShape.x,selShape.y))
-          m.set("width",selShape.w)
-          m.set("height",selShape.h)
+          m["topleft"]=String(selShape.x+","+selShape.y)
+          m["width"]=String(selShape.w)
+          m["height"]=String(selShape.h)
         }
         else if(selShape.t=="t"){
           type="triangle"
@@ -474,17 +484,17 @@ export default {
           selShape.y2=document.getElementById('p2y').value;
           selShape.x3=document.getElementById('p3x').value;
           selShape.y3=document.getElementById('p3y').value;
-          m.set("first",(selShape.x1,selShape.y1))
-          m.set("second",(selShape.x2,selShape.y2))
-          m.set("third",(selShape.x3,selShape.y3))
+          m["first"]=String(selShape.x1+","+selShape.y1)
+          m["second"]=String(selShape.x2+","+selShape.y2)
+          m["third"]=String(selShape.x3+","+selShape.y3)
         }
         else if(selShape.t=="c"){
           type="circle"
           selShape.x=document.getElementById('x').value;
           selShape.y=document.getElementById('y').value;
           selShape.w=document.getElementById('rad').value;
-          m.set("topleft",(selShape.x,selShape.y))
-          m.set("radius",selShape.w)
+          m["topleft"]=String(selShape.x+","+selShape.y)
+          m["radius"]=String(selShape.w)
         }
         else{
           type="ellipse"
@@ -492,9 +502,9 @@ export default {
           selShape.y=document.getElementById('y').value;
           selShape.w=document.getElementById('radx').value;
           selShape.h=document.getElementById('rady').value;
-          m.set("topleft",(selShape.x,selShape.y))
-          m.set("radius_x",selShape.w)
-          m.set("radius_y",selShape.h)
+          m["topleft"]=String(selShape.x+","+selShape.y)
+          m["radius_x"]=String(selShape.w)
+          m["radius_y"]=String(selShape.h)
         }
         if(n==2){
           var index = list.length;
@@ -505,22 +515,24 @@ export default {
           }
           })
               .then(function (response) {
-                mapping.set(response,index)
-                list[index].id=response;
+                mapping.set(response.data,index)
+                list[index].id=response.data;
               })
         }
 
 
+        console.log("id :  "+parseInt(selShape.id) + " sel :"+selShape.id)
+        m["id"]=String(selShape.id);
+        var a=m;
+       axios.post("http://localhost:8085/edit", {
+            m: JSON.stringify(a)
 
-        axios.get("http://localhost:8085/edit", {
-          params: {
-            id:selShape.id,
-            map:m
-          }
         })
       }
+
       //change in list
-     list[mapping.get(selShape.id)]=selShape;
+     console.log("id2: "+mapping.get(selShape.id))
+     list[parseInt(mapping.get(selShape.id))]=selShape;
 
      sel=false;
      selShape=null;
@@ -536,14 +548,14 @@ export default {
       document.getElementById("model").style.display = "none";
       axios.get("http://localhost:8085/delete", {
         params: {
-          id: selShape.id
+          id: parseInt(selShape.id)
         }
       })
 
       var index =list.indexOf(selShape);
       mapping.set(selShape.id,null)
       list.splice(index,1)
-      this.redraw(false)
+      this.redraw(false,1)
     },
     copy(){
       document.getElementById("copy").style.display = "none";
@@ -560,14 +572,19 @@ export default {
       selShape=null;
     },
     set_list(m){
+      console.log(m)
+      var x8=x8.map(m)
+      console.log(x8)
       var newList=[]
-      m.forEach( (value, key) => {
+      for( const [key, value] of m){
         var id =key;
+        console.log("id : "+key)
         var type = value.get("type");
         var fillcolor=value.get("fillcolor"),
             borderwidth=value.get("borderwidth"),
             bordercolor=value.get("bordercolor"),
             border=false;
+        console.log("color : "+fillcolor)
             if(value.has("bordercolor")&&bordercolor!=null&&bordercolor!=undefined){
               border=true
             }
@@ -621,7 +638,7 @@ export default {
               borderwidth,bordercolor,"e"));
           newList[i].id=id;
         }
-      });
+      }
       list=newList;
     }
 

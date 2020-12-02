@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 createApp(App).mount('#app')
-import * as axios from "core-js";
+//import axios from 'axios'
 export const recreate = {
     draw() {
 
@@ -30,17 +30,19 @@ export const recreate = {
         }
     },
 
-    enable(){
+    /*enable(){
         axios.get("http://localhost:8085/undo")
             .then(function (response) {
-                if (response != null) {
+                console.log("en-undo : "+response.data)
+                if (response.data != '') {
                     document.getElementById("undo").className = "btn";
                 }
             })
 
         axios.get("http://localhost:8085/redo")
             .then(function (response) {
-                if (response != null) {
+                console.log("en-redo : "+response.data)
+                if (response.data != '') {
                     document.getElementById("redo").className = "btn";
                 }
             })
@@ -48,18 +50,20 @@ export const recreate = {
     disable() {
         axios.get("http://localhost:8085/undo")
             .then(function (response) {
-                if (response == null) {
+                console.log("dis-undo : "+response.data)
+                if (response.data == '') {
                     document.getElementById("undo").className = "disabled";
                 }
             })
 
         axios.get("http://localhost:8085/redo")
             .then(function (response) {
-                if (response == null) {
+                console.log("dis-redo : "+response.data)
+                if (response.data == '') {
                     document.getElementById("redo").className = "disabled";
                 }
             })
-    }
+    }*/
 
 }
 
@@ -77,8 +81,8 @@ export const fun = {
 };
 
 recreate.draw();
-recreate.enable();
-recreate.disable();
+//recreate.enable();
+//recreate.disable();
 
 window.onclick = function (event) {
     if (event.target == document.getElementById("myModal")) {

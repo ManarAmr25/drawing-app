@@ -51,20 +51,17 @@
 
 <script>
 import Shapes from "@/components/Shapes";
-import * as axios from "core-js";
+import axios from 'axios';
 var newf=false;
 export default {
   name: "Menu",
   methods: {
-   /* enable(){
-      //undo,redo
-      document.getElementById("MyElement").className = "btn";
-    },*/
     undo(){
       axios.get("http://localhost:8085/undo")
           .then(function (response) {
-             if(response != null){
-               Shapes.methods.set_list(response);
+
+             if(response.data != ''){
+               Shapes.methods.set_list(response.data);
              }
           })
 
@@ -72,8 +69,8 @@ export default {
     redo(){
         axios.get("http://localhost:8085/redo")
           .then(function (response) {
-             if(response != null){
-               Shapes.methods.set_list(response);
+             if(response.data != ''){
+               Shapes.methods.set_list(response.data);
              }
           })
     },
@@ -88,6 +85,8 @@ export default {
          Shapes.methods.clear(); 
          // send to backend axios
          axios.get("http://localhost:8085/new")
+
+
          if(newf==false){
          document.getElementsByClassName("close")[0].click();}
 
@@ -116,7 +115,7 @@ export default {
         params: {
           name:document.getElementById("fname").value,
           path:document.getElementById("fpath").value,
-          extenstion:ext
+          extension:ext
         }
       })
     if(newf){
@@ -137,11 +136,10 @@ export default {
         params: {
           name:res[0],
           path:document.getElementById("fpath1").value,
-          extenstion:res[1]
+          extension:res[1]
         }
       }).then(function (response) {
-        console.log(response);
-            Shapes.methods.set_list(response);
+            Shapes.methods.set_list(response.data);
           })
     
     document.getElementsByClassName("close")[2].click();
