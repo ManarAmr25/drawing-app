@@ -197,6 +197,7 @@ function create_layout(n){
     sh.methods.drawing(selShape,canvas)
     context.setLineDash([20, 15]);
     context.lineWidth = 5;
+    context.strokeStyle=5;
     context.strokeStyle='red'
     if(selShape.t=='r'||selShape.t=='s'){
       context.strokeRect(selShape.x,selShape.y, selShape.w,selShape.h);
@@ -209,6 +210,14 @@ function create_layout(n){
     showoptions();
 }
 function showoptions() {
+  document.getElementById("mode0").style.display = "none";
+  document.getElementById("mode3").style.display = "none";
+  document.getElementById("mode").style.display = "none";
+  document.getElementById("mode2").style.display = "none";
+  document.getElementById("tmode").style.display = "none";
+  document.getElementById('lmode').style.display="none";
+  document.getElementById("mode1").style.display = "none";
+  document.getElementById('main').style.display="block";
   //show options
   document.getElementById("model").style.display = "block";
   document.getElementById("fillcolor").value = selShape.fcolor;
@@ -222,9 +231,9 @@ function showoptions() {
     if(selShape.t=='l'){
       document.getElementById('main').style.display="none";
       document.getElementById('lmode').style.display="block";
-
       document.getElementById("lcolor").value = selShape.fcolor;
       document.getElementById('lwidth').value=selShape.borderwidth;
+
     }
     if(selShape.t=="t"){
       document.getElementById("tmode").style.display = "block";
@@ -370,17 +379,16 @@ export default {
 
     },
     drawing(shape,can , flag){
-      //recreate.enable();
-      //recreate.disable();
       if (can.getContext) {
         var ctx = can.getContext('2d');
         if(shape.t=='l'){ //draw line
           ctx.beginPath();
           ctx.moveTo(shape.x, shape.y);
           ctx.lineTo(shape.w, shape.h);
-          ctx.strokeWidth=shape.borderwidth;
           ctx.strokeStyle=shape.fcolor;
+          ctx.lineWidth=shape.borderwidth;
           ctx.stroke();
+
         }
       else if(shape.t=='s'||shape.t=="r"){ //draw rectangle or square
           console.log("draw: "+ctx.fillStyle)
@@ -453,7 +461,8 @@ export default {
         if(selShape.t=="l"){
           type="line"
           selShape.borderwidth=document.getElementById('lwidth').value;
-          selShape.bordercolor=document.getElementById('lcolor').value;
+          console.log("re : "+selShape.borderwidth);
+          selShape.fcolor=document.getElementById('lcolor').value;
           selShape.x=document.getElementById('p1x').value;
           selShape.y=document.getElementById('p1y').value;
           selShape.w=document.getElementById('p2x').value;
