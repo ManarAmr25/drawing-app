@@ -25,9 +25,13 @@ import Menu from "@/components/Menu";
 import Shapes from "@/components/Shapes";
 import Board from "@/components/Board";
 import { fun} from "@/main";
+import axios from 'axios';
 
 export default {
   components: { Board, Shapes, Menu},
+   mounted:function(){
+        this.loading()  
+  },
   data(){
       return({
   coo:''
@@ -36,6 +40,9 @@ export default {
   methods:{
     on(event){
       this.coo=fun.show(event)
+    },
+    loading(){
+      axios.get("http://localhost:8085/new")
     }
 }
 }

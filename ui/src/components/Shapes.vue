@@ -207,6 +207,12 @@ function create_layout(n){
     showoptions();
 }
 function showoptions() {
+  document.getElementById("copy").style.display = "inline";
+  document.getElementById("del").style.display = "inline";
+  document.getElementById("ok").style.display = "block";
+  document.getElementById("ok2").style.display = "none";
+  document.getElementById("co").style.display = "none";
+
   document.getElementById("mode0").style.display = "none";
   document.getElementById("mode3").style.display = "none";
   document.getElementById("mode").style.display = "none";
@@ -412,7 +418,7 @@ export default {
         }
       else if(shape.t=='c'){ //draw circle
           ctx.beginPath();
-          ctx.arc(shape.x, shape.y, shape.w, shape.h, 2 * Math.PI);
+          ctx.arc(shape.x, shape.y, shape.w, 0, 2 * Math.PI);
           ctx.fillStyle=shape.fcolor;
           if(shape.border){
             ctx.strokeStyle=shape.bordercolor;
@@ -438,10 +444,13 @@ export default {
       }
 
     },
-   redraw(flag,n){
+   async redraw(flag,n){
      document.getElementById("model").style.display = "none";
      var temp;
+     console.log("start")
+     console.log(list)
       if(flag){
+        console.log("change1")
         var m = new Map()
         var type,fcolor,border,borderwidth,bordercolor,x,y,w,h,x1,y1,x2,y2,x3,y3;
        fcolor=document.getElementById('fillcolor').value;
@@ -511,24 +520,28 @@ export default {
         }
         temp=new shape(x,y,w,h,x1,y1,x2,y2,x3,y3,
             fcolor,border,borderwidth,bordercolor,selShape.t)
+        temp.id=selShape.id;
         if(n==2){
           var index = list.length;
           list.push(temp)
-          console.log("shape list")
-          console.log(list)
-          axios.get("http://localhost:8085/create",{
+          await axios.get("http://localhost:8085/create",{
           params:{
             type:type
           }
           })
               .then(function (response) {
                 mapping.set(response.data,index)
-                list[index].id=response.data;
+                console.log("response")
+                console.log(response.data)
+                temp.id=response.data;
               })
         }
 
-
-        m["id"]=String(selShape.id);
+        console.log("hello")
+        console.log("id: "+temp.id)
+        console.log(list)
+        //console.log(list[index])
+        m["id"]=String(temp.id);
         var a=m;
        axios.post("http://localhost:8085/edit", {
             m: JSON.stringify(a)
@@ -548,13 +561,14 @@ export default {
      sel=false;
      selShape=null;
       recreate.draw();
-      console.log("before for:")
+      console.log("for")
      console.log(list)
       for(var i=0;i<list.length;i++){
         var v =list[i];
         var canvas=document.getElementById('myCanvas');
         this.drawing(v,canvas,true);
       }
+     console.log(list)
     },
     deletes(){
       document.getElementById("model").style.display = "none";
@@ -584,6 +598,7 @@ export default {
     },
     set_list(m){
       console.log("from set list")
+      console.log(m)
       this.clear();
       var map=new Map(Object.entries(m))
       var newList=[]
@@ -657,8 +672,6 @@ export default {
       }
 
      list=newList;
-      console.log(list)
-      console.log(mapping)
       this.redraw(false,1);
     }
 

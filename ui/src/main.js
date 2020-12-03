@@ -29,42 +29,6 @@ export const recreate = {
 
         }
     },
-
-    /*enable(){
-        axios.get("http://localhost:8085/undo")
-            .then(function (response) {
-                console.log("en-undo : "+response.data)
-                if (response.data != '') {
-                    document.getElementById("undo").className = "btn";
-                }
-            })
-
-        axios.get("http://localhost:8085/redo")
-            .then(function (response) {
-                console.log("en-redo : "+response.data)
-                if (response.data != '') {
-                    document.getElementById("redo").className = "btn";
-                }
-            })
-    },
-    disable() {
-        axios.get("http://localhost:8085/undo")
-            .then(function (response) {
-                console.log("dis-undo : "+response.data)
-                if (response.data == '') {
-                    document.getElementById("undo").className = "disabled";
-                }
-            })
-
-        axios.get("http://localhost:8085/redo")
-            .then(function (response) {
-                console.log("dis-redo : "+response.data)
-                if (response.data == '') {
-                    document.getElementById("redo").className = "disabled";
-                }
-            })
-    }*/
-
 }
 
 //calculate coordinates
@@ -81,9 +45,6 @@ export const fun = {
 };
 
 recreate.draw();
-//recreate.enable();
-//recreate.disable();
-
 window.onclick = function (event) {
     if (event.target == document.getElementById("myModal")) {
         document.getElementById("myModal").style.display = "none";
