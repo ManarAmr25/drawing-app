@@ -41,10 +41,10 @@
     <button class="open" @click="open()">open file</button>
   </div></div>
  <!-- button undo -->
-    <button id="undo" class="disabled" @click="undo()"><span style='font-weight:bold;'>&#8630;</span> UNDO</button>
+    <button id="undo" class="btn" @click="undo()"><span style='font-weight:bold;'>&#8630;</span> UNDO</button>
 
      <!-- button redo -->
-    <button id="redo" class="disabled" @click="redo()"><span style='font-weight:bold;'>&#8631;</span> REDO</button>
+    <button id="redo" class="btn" @click="redo()"><span style='font-weight:bold;'>&#8631;</span> REDO</button>
   </nav>
 
 </template>
@@ -59,7 +59,6 @@ export default {
     undo(){
       axios.get("http://localhost:8085/undo")
           .then(function (response) {
-
              if(response.data != ''){
                Shapes.methods.set_list(response.data);
              }
@@ -109,12 +108,12 @@ export default {
     }else{
       ext=".xml"
     }
-
+   var filepath= document.getElementById("fpath").value;
     //backend axios
     axios.get("http://localhost:8085/save", {
         params: {
           name:document.getElementById("fname").value,
-          path:document.getElementById("fpath").value,
+          path:filepath+'\\',
           extension:ext
         }
       })
@@ -124,7 +123,6 @@ export default {
 
     }
 
-
      document.getElementsByClassName("close")[1].click();
 
   },
@@ -132,14 +130,17 @@ export default {
     Shapes.methods.clear();
     var res = document.getElementById("fname1").value.split(".");
     //axios
+    var filepath = document.getElementById("fpath1").value;
     axios.get("http://localhost:8085/load", {
         params: {
-          name:res[0],
-          path:document.getElementById("fpath1").value,
-          extension:res[1]
+          name:String(res[0]),
+          path:String(filepath+'\\'),
+          extension:String('.'+res[1])
         }
       }).then(function (response) {
             Shapes.methods.set_list(response.data);
+            console.log(response.data);
+
           })
     
     document.getElementsByClassName("close")[2].click();
@@ -193,10 +194,7 @@ button{
   background-color: rgb(74, 5, 104);
 }
 
-.disabled{
-  opacity: 0.6;
-  cursor:not-allowed;
-}
+
 
 
 
