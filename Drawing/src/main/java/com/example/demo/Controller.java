@@ -32,7 +32,8 @@ public class Controller {
 
     @GetMapping("/load")
     public Map<Integer, Shapes> Load(@RequestParam(value = "name")String name, @RequestParam(value = "path")String path, @RequestParam(value = "extension") String extension){
-        this.a.Load(path + name , extension.substring(1));
+        this.a.Load(path + name + extension, extension.substring(1));
+        System.out.print(this.a.GetList());
         return this.a.GetList();
     }
 
