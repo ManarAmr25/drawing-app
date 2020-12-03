@@ -33,7 +33,7 @@ public class Controller {
     @GetMapping("/load")
     public Map<Integer, Shapes> Load(@RequestParam(value = "name")String name, @RequestParam(value = "path")String path, @RequestParam(value = "extension") String extension){
         this.a.Load(path + name + extension, extension.substring(1));
-        System.out.print(this.a.GetList());
+      //  System.out.print(this.a.GetList());
         return this.a.GetList();
     }
 
@@ -43,6 +43,8 @@ public class Controller {
         if (!a.Undo()){
             return null;
         }
+        System.out.println("undo");
+        System.out.println(a.GetList());
         return a.GetList();
     }
 
@@ -52,13 +54,15 @@ public class Controller {
         if(!a.Redo()){
             return null;
         }
+        System.out.println("redo");
+        System.out.println(a.GetList());
         return a.GetList();
     }
 
     // "/create"
     @GetMapping("/create")
     public Integer Create(@RequestParam(value = "type") String type){
-        System.out.println("type: "+type);
+       // System.out.println("type: "+type);
         return this.a.Create(type);
     }
 
@@ -71,7 +75,7 @@ public class Controller {
             String json =map.get("m");
             Map<String, String> map2 = mapper.readValue(json, Map.class);
             System.out.println(map2);
-            System.out.println(map2.get("id"));
+           // System.out.println(map2.get("id"));
             Integer id = Integer.valueOf(map2.remove("id"));
             this.a.Edit(id,map2);
         } catch (JsonProcessingException e) {

@@ -163,6 +163,8 @@ public class Drawing implements Serializable {
             else if(a.getActionType().equals("modify")){
                 Shapes s = getShapeById(a.getId());
                 s.setProperty(a.getProperty(), a.getOldValue());
+                System.out.println("shape");
+                System.out.println(a.getId());
             }
         }
     }
